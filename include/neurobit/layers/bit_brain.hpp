@@ -26,6 +26,10 @@ class BitBrainLayer
 
         components::GlialConfig glial_config;
         float vigilance = 0.5f; // For M-DSiLU
+
+        // Biomimetic cross-module adaptation
+        float glial_target_novelty_gain = 0.0f; // target_sparsity += gain * (1 - familiarity)
+        float glial_priming_rate = 0.0f;        // blend current threshold toward hippocampus suggested_threshold
     };
 
     BitBrainLayer(s::queue &q, const Config &cfg)
@@ -80,27 +84,51 @@ class BitBrainLayer
             h.parallel_for(s::range<1>(batch * hidden), [=](s::id<1> idx) { acc[idx] = 0.0f; });
         });
 
-        // 1. Hippocampus: Compute Familiarity
+        // 1. Hippocampus: Track the current working threshold so suggested_threshold is on the right scale.
+        {
+            float th = glial_.get_threshold();
+            float learned = hippocampus_.get_learned_threshold();
+            hippocampus_.set_learned_threshold(0.99f * learned + 0.01f * th);
+        }
+
+        // 2. Hippocampus: Compute Familiarity (+ suggested threshold)
         auto recall = hippocampus_.compute_familiarity(queue_, input, w_fast, w_slow);
         float familiarity = recall.familiarity_score;
 
-        // 2. Input Projection (BitLinear)
+        // 2.5 Glial: context-dependent target sparsity (novelty-driven exploration)
+        if (cfg_.glial_target_novelty_gain != 0.0f)
+        {
+            float target = cfg_.glial_config.target_sparsity + cfg_.glial_target_novelty_gain * (1.0f - familiarity);
+            target = s::clamp(target, 0.05f, 0.95f);
+            glial_.set_target_sparsity(target);
+        }
+
+        // 2.6 Glial: threshold priming toward hippocampus suggested threshold
+        if (cfg_.glial_priming_rate > 0.0f)
+        {
+            float mix = s::clamp(cfg_.glial_priming_rate * (1.0f - familiarity), 0.0f, 1.0f);
+            float cur = glial_.get_threshold();
+            float primed = (1.0f - mix) * cur + mix * recall.suggested_threshold;
+            glial_.set_threshold(primed);
+        }
+
+        // 3. Input Projection (BitLinear)
         proj_in_.forward(queue_, input, *buf_H_proj, batch);
 
-        // 3. SSM Scan (Temporal)
+        // 4. SSM Scan (Temporal)
         ssm_core_.forward_single(queue_, *buf_H_proj, *buf_SSM_A, *buf_H_ssm, *buf_SSM_State);
 
         // 3.5 LayerNorm on SSM output to stabilize signal for Glial/Activation
         // layer_norm(queue_, *buf_H_ssm, batch, hidden, 1e-5f);
 
-        // 4. Activation (M-DSiLU)
+        // 5. Activation (M-DSiLU)
         float threshold = glial_.get_threshold();
         activation_.forward(queue_, *buf_H_ssm, *buf_H_act, batch * hidden, threshold, familiarity);
 
-        // 5. Output Projection (BitLinear)
+        // 6. Output Projection (BitLinear)
         proj_out_.forward(queue_, *buf_H_act, output, batch);
 
-        // 6. Glial Regulation (based on activation sparsity)
+        // 7. Glial Regulation (based on activation sparsity)
         {
             // Define "active" by whether pre-activation exceeds the effective threshold.
             // This avoids counting small-magnitude negative SiLU outputs as "active".

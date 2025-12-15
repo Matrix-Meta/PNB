@@ -38,6 +38,7 @@ class GlialCell
         : cfg_(cfg), current_threshold_(cfg.initial_threshold), current_lr_(cfg.initial_lr), prev_error_(0.0f),
           last_change_ratio_(1.0f), stable_count_(0), is_first_call_(true), current_noise_gain_(cfg.noise_gain_high)
     {
+        target_sparsity_ = std::clamp(cfg_.target_sparsity, 0.0f, 1.0f);
     }
 
     // 核心調節函數
@@ -54,13 +55,13 @@ class GlialCell
         if (is_first_call_)
         {
             sparsity_ema_ = current_sparsity;
-            error_ema_ = current_sparsity - cfg_.target_sparsity;
+            error_ema_ = current_sparsity - target_sparsity_;
         }
         else
         {
             constexpr float kEmaAlpha = 0.05f;
             sparsity_ema_ = (1.0f - kEmaAlpha) * sparsity_ema_ + kEmaAlpha * current_sparsity;
-            float instant_error = sparsity_ema_ - cfg_.target_sparsity;
+            float instant_error = sparsity_ema_ - target_sparsity_;
             error_ema_ = (1.0f - kEmaAlpha) * error_ema_ + kEmaAlpha * instant_error;
         }
 
@@ -139,14 +140,15 @@ class GlialCell
         }
 
         // 根據誤差調整噪聲
-        if (abs_error > cfg_.target_sparsity)
+        float target = std::max(target_sparsity_, 1e-6f);
+        if (abs_error > target)
         {
             current_noise_gain_ = cfg_.noise_gain_high;
         }
         else
         {
             // 線性插值
-            float t = abs_error / cfg_.target_sparsity;
+            float t = abs_error / target;
             current_noise_gain_ = cfg_.noise_gain_low + t * (cfg_.noise_gain_high - cfg_.noise_gain_low);
         }
 
@@ -187,6 +189,16 @@ class GlialCell
     float get_last_sparsity() const
     {
         return last_sparsity_;
+    }
+
+    float get_target_sparsity() const
+    {
+        return target_sparsity_;
+    }
+
+    void set_target_sparsity(float v)
+    {
+        target_sparsity_ = std::clamp(v, 0.0f, 1.0f);
     }
 
     // 更新稀疏度 (用於 USM 優化版本)
@@ -239,6 +251,7 @@ class GlialCell
         is_first_call_ = true;
         current_noise_gain_ = cfg_.noise_gain_high;
         last_sparsity_ = 0.0f;
+        target_sparsity_ = std::clamp(cfg_.target_sparsity, 0.0f, 1.0f);
     }
 
     // 獲取配置
@@ -261,6 +274,7 @@ class GlialCell
     bool is_first_call_;
     float current_noise_gain_;
     float last_sparsity_ = 0.0f;
+    float target_sparsity_ = 0.1f;
 };
 
 } // namespace components

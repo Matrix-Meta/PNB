@@ -135,13 +135,16 @@ int main(int argc, char **argv)
         cfg.output_dim = Out;
         // Glial settings
         cfg.glial_config.initial_threshold = 0.0f;
-        cfg.glial_config.target_sparsity = 0.8f; // Target 80% active (More flow for training)
+        cfg.glial_config.target_sparsity = 0.5f;
+        cfg.glial_config.min_threshold = -1.0f;
         cfg.glial_config.initial_lr = 0.01f;
         cfg.glial_config.max_lr = 0.1f;
         cfg.glial_config.lr_growth = 1.01f;
         cfg.glial_config.lr_shrink = 0.99f;
         cfg.glial_config.max_threshold = 3.0f; // Increased limit for threshold
         cfg.vigilance = 0.5f;                  // M-DSiLU vigilance
+        cfg.glial_target_novelty_gain = 0.3f;
+        cfg.glial_priming_rate = 0.1f;
 
         // The Brain
         neurobit::layers::BitBrainLayer brain(q, cfg);
@@ -265,10 +268,11 @@ int main(int argc, char **argv)
 
             std::cout << "Epoch " << epoch << ": Accuracy = " << accuracy << "%"
                       << " | Active: " << (avg_active * 100.0f) << "%"
+                      << " | Target: " << (glial.get_target_sparsity() * 100.0f) << "%"
                       << " | Glial Th: " << glial.get_threshold() << " | LR: " << LR << " | Time: " << epoch_duration
                       << "ms\n";
 
-            if (epoch >= 5)
+            if (glial.is_stable())
                 LR *= 0.5f;
         }
     }
