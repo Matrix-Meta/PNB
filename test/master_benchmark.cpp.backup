@@ -1,20 +1,20 @@
-#include "neurobit/core/types.hpp"
-#include "neurobit/layers/bit_linear.hpp"
-#include "neurobit/core/xmx.hpp"
-#include "neurobit/layers/ssm_scan.hpp"
-#include "neurobit/layers/spike_neuron.hpp"
-#include "neurobit/layers/bit_brain.hpp"
 #include "neurobit/components/glial.hpp"
 #include "neurobit/components/hippocampus.hpp"
+#include "neurobit/core/types.hpp"
+#include "neurobit/core/xmx.hpp"
+#include "neurobit/layers/bit_brain.hpp"
+#include "neurobit/layers/bit_linear.hpp"
+#include "neurobit/layers/spike_neuron.hpp"
+#include "neurobit/layers/ssm_scan.hpp"
 
-#include <sycl/sycl.hpp>
-#include <vector>
-#include <iostream>
-#include <format>
+#include <chrono>
 #include <cmath>
+#include <format>
+#include <iostream>
 #include <random>
 #include <string>
-#include <chrono>
+#include <sycl/sycl.hpp>
+#include <vector>
 
 namespace s = sycl;
 
@@ -208,7 +208,8 @@ void test_bit_linear_xmx(s::queue &q)
         // 設定權重: 交替 +1, -1
         // W[k, n] = weights[k * N + n]
         std::vector<int8_t> h_W(in_features * out_features);
-        for (size_t i = 0; i < h_W.size(); i++) {
+        for (size_t i = 0; i < h_W.size(); i++)
+        {
             h_W[i] = (i % 2 == 0) ? 1 : -1;
         }
         layer.set_weights(h_W);
@@ -227,14 +228,18 @@ void test_bit_linear_xmx(s::queue &q)
 
         // 驗證: Y[b, n] = Σ_k X[b, k] * W[k, n] = Σ_k 1 * W[k, n]
         bool passed = true;
-        for (size_t b = 0; b < batch && passed; b++) {
-            for (size_t n = 0; n < out_features && passed; n++) {
+        for (size_t b = 0; b < batch && passed; b++)
+        {
+            for (size_t n = 0; n < out_features && passed; n++)
+            {
                 float expected = 0.0f;
-                for (size_t k = 0; k < in_features; k++) {
+                for (size_t k = 0; k < in_features; k++)
+                {
                     expected += static_cast<float>(h_W[k * out_features + n]);
                 }
                 float actual = static_cast<float>(h_Y[b * out_features + n]);
-                if (std::abs(actual - expected) > 0.1f) {
+                if (std::abs(actual - expected) > 0.1f)
+                {
                     passed = false;
                     std::cout << "    Mismatch at [{},{}]: expected={}, got={}\n" << b, n, expected, actual << "\n";
                 }
@@ -245,7 +250,7 @@ void test_bit_linear_xmx(s::queue &q)
 
     // ========== Test 2: Tiled GEMM 測試 (forward_standard) ==========
     {
-        const size_t batch = 17;  // 非對齊維度
+        const size_t batch = 17; // 非對齊維度
         const size_t in_features = 33;
         const size_t out_features = 19;
 
@@ -253,8 +258,10 @@ void test_bit_linear_xmx(s::queue &q)
 
         // 設定權重: 模式化權重
         std::vector<int8_t> h_W(in_features * out_features);
-        for (size_t k = 0; k < in_features; k++) {
-            for (size_t n = 0; n < out_features; n++) {
+        for (size_t k = 0; k < in_features; k++)
+        {
+            for (size_t n = 0; n < out_features; n++)
+            {
                 // 產生 {-1, 0, +1} 模式
                 h_W[k * out_features + n] = static_cast<int8_t>((k + n) % 3 - 1);
             }
@@ -263,8 +270,10 @@ void test_bit_linear_xmx(s::queue &q)
 
         // 輸入: 遞增值
         std::vector<bfloat16> h_X(batch * in_features);
-        for (size_t b = 0; b < batch; b++) {
-            for (size_t k = 0; k < in_features; k++) {
+        for (size_t b = 0; b < batch; b++)
+        {
+            for (size_t k = 0; k < in_features; k++)
+            {
                 h_X[b * in_features + k] = bfloat16(static_cast<float>(k + 1) * 0.1f);
             }
         }
@@ -280,19 +289,25 @@ void test_bit_linear_xmx(s::queue &q)
 
         // 驗證
         bool passed = true;
-        for (size_t b = 0; b < batch && passed; b++) {
-            for (size_t n = 0; n < out_features && passed; n++) {
+        for (size_t b = 0; b < batch && passed; b++)
+        {
+            for (size_t n = 0; n < out_features && passed; n++)
+            {
                 float expected = 0.0f;
-                for (size_t k = 0; k < in_features; k++) {
+                for (size_t k = 0; k < in_features; k++)
+                {
                     float x_val = static_cast<float>(h_X[b * in_features + k]);
                     float w_val = static_cast<float>(h_W[k * out_features + n]);
                     expected += x_val * w_val;
                 }
                 float actual = static_cast<float>(h_Y[b * out_features + n]);
                 // BF16 精度較低，允許較大誤差
-                if (std::abs(actual - expected) > std::abs(expected) * 0.05f + 0.5f) {
+                if (std::abs(actual - expected) > std::abs(expected) * 0.05f + 0.5f)
+                {
                     passed = false;
-                    std::cout << "    Mismatch at [{},{}]: expected={:.4f}, got={:.4f}\n" << b, n, expected, actual << "\n";
+                    std::cout << "    Mismatch at [{},{}]: expected={:.4f}, got={:.4f}\n"
+                              << b,
+                        n, expected, actual << "\n";
                 }
             }
         }
@@ -301,15 +316,14 @@ void test_bit_linear_xmx(s::queue &q)
 
     // ========== Test 3: XMX 對齊測試 ==========
     {
-        const size_t batch = 16;      // TM=8 的倍數
+        const size_t batch = 16;        // TM=8 的倍數
         const size_t in_features = 32;  // TK=16 的倍數
         const size_t out_features = 32; // TN=16 的倍數
 
         BitLinearXMX<bfloat16> layer(q, in_features, out_features);
 
         bool using_xmx = layer.is_using_xmx();
-        report_test({"BitLinearXMX XMX detection", true,
-                     using_xmx ? "XMX ENABLED" : "XMX DISABLED (fallback)"});
+        report_test({"BitLinearXMX XMX detection", true, using_xmx ? "XMX ENABLED" : "XMX DISABLED (fallback)"});
 
         // 全 1 權重
         std::vector<int8_t> h_W(in_features * out_features, 1);
@@ -330,10 +344,13 @@ void test_bit_linear_xmx(s::queue &q)
         // 每個輸出應該 = in_features (全 1 權重 × 全 1 輸入)
         bool passed = true;
         float expected = static_cast<float>(in_features);
-        for (size_t b = 0; b < batch && passed; b++) {
-            for (size_t n = 0; n < out_features && passed; n++) {
+        for (size_t b = 0; b < batch && passed; b++)
+        {
+            for (size_t n = 0; n < out_features && passed; n++)
+            {
                 float actual = static_cast<float>(h_Y[b * out_features + n]);
-                if (std::abs(actual - expected) > 1.0f) {
+                if (std::abs(actual - expected) > 1.0f)
+                {
                     passed = false;
                     std::cout << "    Mismatch at [{},{}]: expected={}, got={}\n" << b, n, expected, actual << "\n";
                 }
@@ -552,15 +569,14 @@ void test_glial_cell()
 
     using namespace neurobit::components;
 
-    GlialConfig cfg{
-        .initial_threshold = 1.0f,
-        .target_sparsity = 0.1f,
-        .min_threshold = 0.1f,
-        .max_threshold = 10.0f,
-        .adaptive_lr = true,
-        .initial_lr = 1.0f,
-        .stability_tolerance = 0.01f,
-        .min_stable_steps = 2};
+    GlialConfig cfg{.initial_threshold = 1.0f,
+                    .target_sparsity = 0.1f,
+                    .min_threshold = 0.1f,
+                    .max_threshold = 10.0f,
+                    .adaptive_lr = true,
+                    .initial_lr = 1.0f,
+                    .stability_tolerance = 0.01f,
+                    .min_stable_steps = 2};
 
     GlialCell glial(cfg);
 
@@ -576,16 +592,14 @@ void test_glial_cell()
     glial.regulate(20, 100); // 20% sparsity
     float new_th = glial.get_threshold();
     passed = (new_th > old_th);
-    report_test({"GlialCell increase threshold (high sparsity)", passed,
-                 "Threshold should increase"});
+    report_test({"GlialCell increase threshold (high sparsity)", passed, "Threshold should increase"});
 
     // Low sparsity (5%) -> should decrease threshold
     old_th = glial.get_threshold();
     glial.regulate(5, 100); // 5% sparsity
     new_th = glial.get_threshold();
     passed = (new_th < old_th);
-    report_test({"GlialCell decrease threshold (low sparsity)", passed,
-                 "Threshold should decrease"});
+    report_test({"GlialCell decrease threshold (low sparsity)", passed, "Threshold should decrease"});
 
     // Test stability detection
     GlialCell glial2(cfg);
@@ -633,19 +647,18 @@ void test_hippocampus(s::queue &q)
     const size_t input_dim = 4;
     const size_t hidden_dim = 8;
 
-    Hippocampus::Config cfg{
-        .batch_size = 1,
-        .input_dim = input_dim,
-        .hidden_dim = hidden_dim,
-        .learning_rate = 0.1f,
-        .consolidation_rate = 0.1f,
-        .decay_rate = 0.05f,
-        .weight_clip = 1.0f,
-        .familiarity_threshold = 0.3f,
-        .priming_strength = 0.5f,
-        .injection_scale = 0.1f,
-        .normalize_injection = true};
-    
+    Hippocampus::Config cfg{.batch_size = 1,
+                            .input_dim = input_dim,
+                            .hidden_dim = hidden_dim,
+                            .learning_rate = 0.1f,
+                            .consolidation_rate = 0.1f,
+                            .decay_rate = 0.05f,
+                            .weight_clip = 1.0f,
+                            .familiarity_threshold = 0.3f,
+                            .priming_strength = 0.5f,
+                            .injection_scale = 0.1f,
+                            .normalize_injection = true};
+
     Hippocampus hippo(cfg);
 
     // Initialize weights to zero
@@ -662,13 +675,12 @@ void test_hippocampus(s::queue &q)
     // Test 1: Initial familiarity should be zero
     auto result = hippo.compute_familiarity(q, buf_X, buf_W_fast, buf_W_slow);
     bool passed = (result.familiarity_score < 0.1f);
-    report_test({"Hippocampus initial familiarity", passed, 
-                 "Score: " + std::to_string(result.familiarity_score)});
+    report_test({"Hippocampus initial familiarity", passed, "Score: " + std::to_string(result.familiarity_score)});
 
     // Test 2: Learn a pattern
     hippo.learn(q, buf_X, buf_Z, buf_W_fast, 1.0f);
     q.wait();
-    
+
     passed = true;
     for (size_t i = 0; i < h_W_fast.size(); i++)
     {
@@ -680,13 +692,13 @@ void test_hippocampus(s::queue &q)
     // Test 3: Familiarity after learning should be high
     result = hippo.compute_familiarity(q, buf_X, buf_W_fast, buf_W_slow);
     passed = (result.familiarity_score > 0.5f);
-    report_test({"Hippocampus familiarity after learning", passed,
-                 "Score: " + std::to_string(result.familiarity_score)});
+    report_test(
+        {"Hippocampus familiarity after learning", passed, "Score: " + std::to_string(result.familiarity_score)});
 
     // Test 4: Consolidation
     hippo.consolidate(q, buf_W_fast, buf_W_slow);
     q.wait();
-    
+
     passed = true;
     for (size_t i = 0; i < h_W_slow.size(); i++)
     {
@@ -698,10 +710,10 @@ void test_hippocampus(s::queue &q)
     // Test 5: Memory injection
     std::vector<float> h_H(hidden_dim, 1.0f);
     s::buffer<float, 1> buf_H{h_H};
-    
+
     hippo.inject_memory(q, buf_X, buf_W_fast, buf_W_slow, buf_H, 0.8f);
     q.wait();
-    
+
     passed = true;
     for (size_t i = 0; i < hidden_dim; i++)
     {
@@ -714,14 +726,14 @@ void test_hippocampus(s::queue &q)
     std::fill(h_W_fast.begin(), h_W_fast.end(), 0.9f);
     std::vector<float> h_X_large(input_dim, 10.0f);
     std::vector<float> h_Z_large(hidden_dim, 10.0f);
-    
+
     s::buffer<float, 1> buf_X_large{h_X_large};
     s::buffer<float, 1> buf_Z_large{h_Z_large};
     s::buffer<float, 1> buf_W_test{h_W_fast};
-    
+
     hippo.learn(q, buf_X_large, buf_Z_large, buf_W_test, 1.0f);
     q.wait();
-    
+
     passed = true;
     for (size_t i = 0; i < h_W_fast.size(); i++)
     {
@@ -737,42 +749,42 @@ void test_hippocampus(s::queue &q)
 void benchmark_bit_linear(s::queue &q, size_t batch_size)
 {
     std::cout << "\n=== Benchmark: BitLinear (batch={}) ===\n" << batch_size << "\n";
-    
+
     using namespace neurobit::layers;
-    
+
     const size_t in_features = 1024;
     const size_t out_features = 1024;
-    
+
     BitLinearXMX layer({batch_size, in_features, out_features});
-    
+
     std::vector<float> h_X(batch_size * in_features, 1.0f);
     std::vector<int8_t> h_W(in_features * out_features, 1);
     std::vector<float> h_Y(batch_size * out_features, 0.0f);
-    
+
     s::buffer<float, 1> buf_X{h_X};
     s::buffer<int8_t, 1> buf_W{h_W};
     s::buffer<float, 1> buf_Y{h_Y};
-    
+
     // Warmup
     for (int i = 0; i < 3; i++)
     {
         layer.forward(q, buf_X, buf_W, buf_Y);
     }
     q.wait();
-    
+
     // Benchmark
     const int iterations = 100;
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     for (int i = 0; i < iterations; i++)
     {
         layer.forward(q, buf_X, buf_W, buf_Y);
     }
     q.wait();
-    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-    
+
     double avg_time_ms = duration / 1000.0 / iterations;
     // BitLinear 只有加減法，沒有乘法
     double ops = static_cast<double>(batch_size) * in_features * out_features;
@@ -797,8 +809,9 @@ void benchmark_bit_linear_xmx(s::queue &q, size_t batch_size)
 
     // 初始化權重
     std::vector<int8_t> h_W(in_features * out_features);
-    for (size_t i = 0; i < h_W.size(); i++) {
-        h_W[i] = static_cast<int8_t>((i % 3) - 1);  // {-1, 0, 1} 循環
+    for (size_t i = 0; i < h_W.size(); i++)
+    {
+        h_W[i] = static_cast<int8_t>((i % 3) - 1); // {-1, 0, 1} 循環
     }
     layer.set_weights(h_W);
 
@@ -812,7 +825,8 @@ void benchmark_bit_linear_xmx(s::queue &q, size_t batch_size)
     printf("  XMX Status: {}\n", layer.is_using_xmx() ? "ENABLED" : "DISABLED (using tiled GEMM)");
 
     // Warmup
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++)
+    {
         layer.forward(buf_X, buf_Y, batch_size);
     }
     q.wait();
@@ -821,7 +835,8 @@ void benchmark_bit_linear_xmx(s::queue &q, size_t batch_size)
     const int iterations = 100;
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < iterations; i++) {
+    for (int i = 0; i < iterations; i++)
+    {
         layer.forward(buf_X, buf_Y, batch_size);
     }
     q.wait();
@@ -834,9 +849,9 @@ void benchmark_bit_linear_xmx(s::queue &q, size_t batch_size)
     double flops = 2.0 * static_cast<double>(batch_size) * in_features * out_features;
     double gflops = (flops * iterations) / (duration / 1e6) / 1e9;
     // Memory: X (BF16) + W (packed) + Y (BF16)
-    double bytes = batch_size * in_features * 2 +               // X: BF16
-                   (in_features * out_features + 3) / 4 +       // W: packed
-                   batch_size * out_features * 2;               // Y: BF16
+    double bytes = batch_size * in_features * 2 +         // X: BF16
+                   (in_features * out_features + 3) / 4 + // W: packed
+                   batch_size * out_features * 2;         // Y: BF16
     double gb_s = bytes * iterations / (duration / 1e6) / 1e9;
 
     printf("  Avg time: {:.3f} ms\n", avg_time_ms);
@@ -848,48 +863,48 @@ void benchmark_bit_linear_xmx(s::queue &q, size_t batch_size)
 void benchmark_ssm_scan(s::queue &q, size_t batch_size)
 {
     std::cout << "\n=== Benchmark: SSM Scan (batch={}) ===\n" << batch_size << "\n";
-    
+
     using namespace neurobit::layers;
-    
+
     const size_t seq_len = 512;
     const size_t state_dim = 512;
-    
+
     SSMScan layer({batch_size, seq_len, state_dim, true});
-    
+
     std::vector<float> h_X(batch_size * state_dim, 1.0f);
     std::vector<float> h_A(state_dim, 0.5f);
     std::vector<float> h_Y(batch_size * state_dim, 0.0f);
     std::vector<float> h_State(batch_size * state_dim, 0.0f);
-    
+
     s::buffer<float, 1> buf_X{h_X};
     s::buffer<float, 1> buf_A{h_A};
     s::buffer<float, 1> buf_Y{h_Y};
     s::buffer<float, 1> buf_State{h_State};
-    
+
     // Warmup
     for (int i = 0; i < 3; i++)
     {
         layer.forward_single(q, buf_X, buf_A, buf_Y, buf_State);
     }
     q.wait();
-    
+
     // Benchmark
     const int iterations = 100;
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     for (int i = 0; i < iterations; i++)
     {
         layer.forward_single(q, buf_X, buf_A, buf_Y, buf_State);
     }
     q.wait();
-    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-    
+
     double avg_time_ms = duration / 1000.0 / iterations;
     double ops = batch_size * state_dim * 4; // 4 ops per element
     double gflops = (ops * iterations) / (duration / 1e6) / 1e9;
-    
+
     printf("  Avg time: {:.3f} ms\n", avg_time_ms);
     printf("  Throughput: {:.2f} GFLOPS\n", gflops);
     printf("  Elements/sec: {:.2f} M\n", (batch_size * state_dim * iterations) / (duration / 1e6) / 1e6);
@@ -898,49 +913,49 @@ void benchmark_ssm_scan(s::queue &q, size_t batch_size)
 void benchmark_spike_neuron(s::queue &q, size_t batch_size)
 {
     std::cout << "\n=== Benchmark: Spike Neuron (batch={}) ===\n" << batch_size << "\n";
-    
+
     using namespace neurobit::layers;
-    
+
     const size_t state_dim = 1024;
     const float threshold = 1.0f;
-    
+
     OUNoiseConfig ou_cfg{0.15f, 0.0f, 0.1f, 1.0f, true};
     SpikeNeuron layer({batch_size, 1, state_dim, threshold, 0.5f, true, ou_cfg});
-    
+
     std::vector<float> h_X(batch_size * state_dim, 0.8f);
     std::vector<float> h_V(batch_size * state_dim, 0.0f);
     std::vector<float> h_Z(batch_size * state_dim, 0.0f);
     std::vector<float> h_OU(batch_size * state_dim, 0.0f);
     std::vector<int> h_Act(batch_size, 0);
-    
+
     s::buffer<float, 1> buf_X{h_X};
     s::buffer<float, 1> buf_V{h_V};
     s::buffer<float, 1> buf_Z{h_Z};
     s::buffer<float, 1> buf_OU{h_OU};
     s::buffer<int, 1> buf_Act{h_Act};
-    
+
     // Warmup
     for (int i = 0; i < 3; i++)
     {
         layer.forward_single(q, buf_X, buf_V, buf_Z, buf_OU, buf_Act);
     }
     q.wait();
-    
+
     // Benchmark
     const int iterations = 100;
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     for (int i = 0; i < iterations; i++)
     {
         layer.forward_single(q, buf_X, buf_V, buf_Z, buf_OU, buf_Act);
     }
     q.wait();
-    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-    
+
     double avg_time_ms = duration / 1000.0 / iterations;
-    
+
     printf("  Avg time: {:.3f} ms\n", avg_time_ms);
     printf("  Neurons/sec: {:.2f} M\n", (batch_size * state_dim * iterations) / (duration / 1e6) / 1e6);
     printf("  Batch/sec: {:.0f}\n", 1000.0 / avg_time_ms);
@@ -949,79 +964,78 @@ void benchmark_spike_neuron(s::queue &q, size_t batch_size)
 void benchmark_hippocampus(s::queue &q, size_t batch_size)
 {
     std::cout << "\n=== Benchmark: Hippocampus (batch={}) ===\n" << batch_size << "\n";
-    
+
     using namespace neurobit::components;
-    
+
     const size_t input_dim = 512;
     const size_t hidden_dim = 1024;
-    
-    Hippocampus::Config cfg{
-        .batch_size = batch_size,
-        .input_dim = input_dim,
-        .hidden_dim = hidden_dim,
-        .learning_rate = 0.1f,
-        .consolidation_rate = 0.1f,
-        .decay_rate = 0.05f,
-        .weight_clip = 1.0f,
-        .familiarity_threshold = 0.3f,
-        .priming_strength = 0.5f,
-        .injection_scale = 0.1f,
-        .normalize_injection = true};
-    
+
+    Hippocampus::Config cfg{.batch_size = batch_size,
+                            .input_dim = input_dim,
+                            .hidden_dim = hidden_dim,
+                            .learning_rate = 0.1f,
+                            .consolidation_rate = 0.1f,
+                            .decay_rate = 0.05f,
+                            .weight_clip = 1.0f,
+                            .familiarity_threshold = 0.3f,
+                            .priming_strength = 0.5f,
+                            .injection_scale = 0.1f,
+                            .normalize_injection = true};
+
     Hippocampus hippo(cfg);
-    
+
     std::vector<float> h_W_fast(input_dim * hidden_dim, 0.5f);
     std::vector<float> h_W_slow(input_dim * hidden_dim, 0.5f);
     std::vector<float> h_X(input_dim, 1.0f);
     std::vector<float> h_Z(hidden_dim, 0.5f);
     std::vector<float> h_H(hidden_dim, 0.0f);
-    
+
     s::buffer<float, 1> buf_W_fast{h_W_fast};
     s::buffer<float, 1> buf_W_slow{h_W_slow};
     s::buffer<float, 1> buf_X{h_X};
     s::buffer<float, 1> buf_Z{h_Z};
     s::buffer<float, 1> buf_H{h_H};
-    
+
     // Warmup
     for (int i = 0; i < 3; i++)
     {
         hippo.compute_familiarity(q, buf_X, buf_W_fast, buf_W_slow);
     }
     q.wait();
-    
+
     // Benchmark familiarity computation
     const int iterations = 100;
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     for (int i = 0; i < iterations; i++)
     {
         hippo.compute_familiarity(q, buf_X, buf_W_fast, buf_W_slow);
     }
     q.wait();
-    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-    
+
     double avg_time_ms = duration / 1000.0 / iterations;
     double ops = input_dim * hidden_dim * 2; // dot products
     double gflops = (ops * iterations) / (duration / 1e6) / 1e9;
-    
+
     printf("  Familiarity check: {:.3f} ms\n", avg_time_ms);
     printf("  Throughput: {:.2f} GFLOPS\n", gflops);
-    
+
     // Benchmark learning
     start = std::chrono::high_resolution_clock::now();
-    
+
     for (int i = 0; i < iterations; i++)
     {
         hippo.learn(q, buf_X, buf_Z, buf_W_fast, 1.0f);
     }
     q.wait();
-    
+
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
     avg_time_ms = duration / 1000.0 / iterations;
-    
+
     printf("  Learning: {:.3f} ms\n", avg_time_ms);
     printf("  Updates/sec: {:.0f}\n", 1000.0 / avg_time_ms);
 }
@@ -1029,60 +1043,55 @@ void benchmark_hippocampus(s::queue &q, size_t batch_size)
 void benchmark_bit_brain_layer(s::queue &q, size_t batch_size)
 {
     std::cout << "\n=== Benchmark: BitBrainLayer Full (batch={}) ===\n" << batch_size << "\n";
-    
+
     using namespace neurobit::layers;
     using namespace neurobit::components;
-    
+
     const size_t input_dim = 256;
     const size_t hidden_dim = 512;
     const size_t output_dim = 128;
-    
-    BitBrainLayer::Config config{
-        .batch_size = batch_size,
-        .seq_len = 1,
-        .input_dim = input_dim,
-        .hidden_dim = hidden_dim,
-        .output_dim = output_dim,
-        .max_think_steps = 20,
-        .min_think_steps = 2,
-        .learn_after_steps = 3,
-        .glial_config = {
-            .initial_threshold = 0.5f,
-            .target_sparsity = 0.1f,
-            .min_threshold = 0.1f,
-            .max_threshold = 10.0f,
-            .adaptive_lr = true,
-            .initial_lr = 1.0f,
-            .stability_tolerance = 0.01f,
-            .min_stable_steps = 2},
-        .ou_config = {
-            .theta = 0.15f,
-            .mu = 0.0f,
-            .sigma = 0.1f,
-            .dt = 1.0f,
-            .enabled = true},
-        .hebbian_lr = 0.05f,
-        .consolidation_rate = 0.1f,
-        .decay_rate = 0.05f,
-        .familiarity_threshold = 0.3f,
-        .priming_strength = 0.5f,
-        .injection_scale = 0.1f,
-        .ffi_strength = 0.5f};
-    
+
+    BitBrainLayer::Config config{.batch_size = batch_size,
+                                 .seq_len = 1,
+                                 .input_dim = input_dim,
+                                 .hidden_dim = hidden_dim,
+                                 .output_dim = output_dim,
+                                 .max_think_steps = 20,
+                                 .min_think_steps = 2,
+                                 .learn_after_steps = 3,
+                                 .glial_config = {.initial_threshold = 0.5f,
+                                                  .target_sparsity = 0.1f,
+                                                  .min_threshold = 0.1f,
+                                                  .max_threshold = 10.0f,
+                                                  .adaptive_lr = true,
+                                                  .initial_lr = 1.0f,
+                                                  .stability_tolerance = 0.01f,
+                                                  .min_stable_steps = 2},
+                                 .ou_config = {.theta = 0.15f, .mu = 0.0f, .sigma = 0.1f, .dt = 1.0f, .enabled = true},
+                                 .hebbian_lr = 0.05f,
+                                 .consolidation_rate = 0.1f,
+                                 .decay_rate = 0.05f,
+                                 .familiarity_threshold = 0.3f,
+                                 .priming_strength = 0.5f,
+                                 .injection_scale = 0.1f,
+                                 .ffi_strength = 0.5f};
+
     BitBrainLayer brain(config);
-    
+
     std::mt19937 gen(42);
     std::bernoulli_distribution dis(0.5);
-    
+
     size_t sz_W_in = input_dim * hidden_dim;
     size_t sz_W_out = hidden_dim * output_dim;
-    
+
     std::vector<float> h_X(input_dim, 1.0f);
     std::vector<int8_t> h_Win(sz_W_in);
     std::vector<int8_t> h_Wout(sz_W_out);
-    for (auto &v : h_Win) v = dis(gen) ? 1 : -1;
-    for (auto &v : h_Wout) v = dis(gen) ? 1 : -1;
-    
+    for (auto &v : h_Win)
+        v = dis(gen) ? 1 : -1;
+    for (auto &v : h_Wout)
+        v = dis(gen) ? 1 : -1;
+
     std::vector<float> h_Assm(hidden_dim, 1.5f);
     std::vector<float> h_Y(output_dim);
     std::vector<float> h_W_fast(sz_W_in, 0.0f);
@@ -1093,7 +1102,7 @@ void benchmark_bit_brain_layer(s::queue &q, size_t batch_size)
     std::vector<float> h_H_proj(hidden_dim);
     std::vector<float> h_H_ssm(hidden_dim);
     std::vector<float> h_H_snn_z(hidden_dim);
-    
+
     s::buffer<float, 1> buf_X{h_X};
     s::buffer<int8_t, 1> buf_Win{h_Win};
     s::buffer<int8_t, 1> buf_Wout{h_Wout};
@@ -1107,38 +1116,32 @@ void benchmark_bit_brain_layer(s::queue &q, size_t batch_size)
     s::buffer<float, 1> buf_H_proj{h_H_proj};
     s::buffer<float, 1> buf_H_ssm{h_H_ssm};
     s::buffer<float, 1> buf_H_snn_z{h_H_snn_z};
-    
+
     // Warmup
     for (int i = 0; i < 2; i++)
     {
-        brain.forward_reasoning(
-            q, buf_X, buf_Win, buf_Assm, buf_Wout, buf_Y,
-            buf_W_fast, buf_W_slow,
-            buf_SSM_state, buf_SNN_v, buf_SNN_ou,
-            buf_H_proj, buf_H_ssm, buf_H_snn_z);
+        brain.forward_reasoning(q, buf_X, buf_Win, buf_Assm, buf_Wout, buf_Y, buf_W_fast, buf_W_slow, buf_SSM_state,
+                                buf_SNN_v, buf_SNN_ou, buf_H_proj, buf_H_ssm, buf_H_snn_z);
     }
-    
+
     // Benchmark
     const int iterations = 20;
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     int total_steps = 0;
     for (int i = 0; i < iterations; i++)
     {
-        auto result = brain.forward_reasoning(
-            q, buf_X, buf_Win, buf_Assm, buf_Wout, buf_Y,
-            buf_W_fast, buf_W_slow,
-            buf_SSM_state, buf_SNN_v, buf_SNN_ou,
-            buf_H_proj, buf_H_ssm, buf_H_snn_z);
+        auto result = brain.forward_reasoning(q, buf_X, buf_Win, buf_Assm, buf_Wout, buf_Y, buf_W_fast, buf_W_slow,
+                                              buf_SSM_state, buf_SNN_v, buf_SNN_ou, buf_H_proj, buf_H_ssm, buf_H_snn_z);
         total_steps += result.reasoning_steps;
     }
-    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-    
+
     double avg_time_ms = duration / 1000.0 / iterations;
     double avg_steps = static_cast<double>(total_steps) / iterations;
-    
+
     printf("  Avg time per inference: {:.3f} ms\n", avg_time_ms);
     printf("  Avg reasoning steps: {:.1f}\n", avg_steps);
     printf("  Inferences/sec: {:.0f}\n", 1000.0 / avg_time_ms);
@@ -1159,37 +1162,30 @@ void test_bit_brain_layer(s::queue &q)
     const size_t hidden_dim = 16;
     const size_t output_dim = 4;
 
-    BitBrainLayer::Config config{
-        .batch_size = 1,
-        .seq_len = 1,
-        .input_dim = input_dim,
-        .hidden_dim = hidden_dim,
-        .output_dim = output_dim,
-        .max_think_steps = 50,
-        .min_think_steps = 2,
-        .learn_after_steps = 3,
-        .glial_config = {
-            .initial_threshold = 0.5f,
-            .target_sparsity = 0.1f,
-            .min_threshold = 0.1f,
-            .max_threshold = 10.0f,
-            .adaptive_lr = true,
-            .initial_lr = 1.0f,
-            .stability_tolerance = 0.01f,
-            .min_stable_steps = 2},
-        .ou_config = {
-            .theta = 0.15f,
-            .mu = 0.0f,
-            .sigma = 0.1f,
-            .dt = 1.0f,
-            .enabled = true},
-        .hebbian_lr = 0.05f,
-        .consolidation_rate = 0.1f,
-        .decay_rate = 0.05f,
-        .familiarity_threshold = 0.3f,
-        .priming_strength = 0.5f,
-        .injection_scale = 0.1f,
-        .ffi_strength = 0.5f};
+    BitBrainLayer::Config config{.batch_size = 1,
+                                 .seq_len = 1,
+                                 .input_dim = input_dim,
+                                 .hidden_dim = hidden_dim,
+                                 .output_dim = output_dim,
+                                 .max_think_steps = 50,
+                                 .min_think_steps = 2,
+                                 .learn_after_steps = 3,
+                                 .glial_config = {.initial_threshold = 0.5f,
+                                                  .target_sparsity = 0.1f,
+                                                  .min_threshold = 0.1f,
+                                                  .max_threshold = 10.0f,
+                                                  .adaptive_lr = true,
+                                                  .initial_lr = 1.0f,
+                                                  .stability_tolerance = 0.01f,
+                                                  .min_stable_steps = 2},
+                                 .ou_config = {.theta = 0.15f, .mu = 0.0f, .sigma = 0.1f, .dt = 1.0f, .enabled = true},
+                                 .hebbian_lr = 0.05f,
+                                 .consolidation_rate = 0.1f,
+                                 .decay_rate = 0.05f,
+                                 .familiarity_threshold = 0.3f,
+                                 .priming_strength = 0.5f,
+                                 .injection_scale = 0.1f,
+                                 .ffi_strength = 0.5f};
 
     BitBrainLayer brain(config);
 
@@ -1234,32 +1230,24 @@ void test_bit_brain_layer(s::queue &q)
     s::buffer<float, 1> buf_H_snn_z{h_H_snn_z};
 
     // Test forward reasoning
-    auto result = brain.forward_reasoning(
-        q, buf_X, buf_Win, buf_Assm, buf_Wout, buf_Y,
-        buf_W_fast, buf_W_slow,
-        buf_SSM_state, buf_SNN_v, buf_SNN_ou,
-        buf_H_proj, buf_H_ssm, buf_H_snn_z);
+    auto result = brain.forward_reasoning(q, buf_X, buf_Win, buf_Assm, buf_Wout, buf_Y, buf_W_fast, buf_W_slow,
+                                          buf_SSM_state, buf_SNN_v, buf_SNN_ou, buf_H_proj, buf_H_ssm, buf_H_snn_z);
 
     bool passed = (result.reasoning_steps >= config.min_think_steps);
-    report_test({"BitBrainLayer forward_reasoning runs", passed,
-                 "Steps: " + std::to_string(result.reasoning_steps)});
+    report_test({"BitBrainLayer forward_reasoning runs", passed, "Steps: " + std::to_string(result.reasoning_steps)});
 
     passed = (result.reasoning_steps <= config.max_think_steps);
-    report_test({"BitBrainLayer respects max_think_steps", passed,
-                 "Steps: " + std::to_string(result.reasoning_steps)});
+    report_test({"BitBrainLayer respects max_think_steps", passed, "Steps: " + std::to_string(result.reasoning_steps)});
 
     passed = (result.final_threshold > 0.0f);
-    report_test({"BitBrainLayer threshold positive", passed,
-                 "Threshold: " + std::to_string(result.final_threshold)});
+    report_test({"BitBrainLayer threshold positive", passed, "Threshold: " + std::to_string(result.final_threshold)});
 
     passed = (result.final_firing_rate >= 0.0f && result.final_firing_rate <= 1.0f);
-    report_test({"BitBrainLayer firing_rate in [0,1]", passed,
-                 "Rate: " + std::to_string(result.final_firing_rate)});
+    report_test({"BitBrainLayer firing_rate in [0,1]", passed, "Rate: " + std::to_string(result.final_firing_rate)});
 
     // Test learning condition
     passed = (result.reasoning_steps > config.learn_after_steps) == result.learned;
-    report_test({"BitBrainLayer learning condition", passed,
-                 "Learned: " + std::string(result.learned ? "Yes" : "No")});
+    report_test({"BitBrainLayer learning condition", passed, "Learned: " + std::string(result.learned ? "Yes" : "No")});
 
     // Test sleep/consolidation
     brain.sleep(q, buf_W_fast, buf_W_slow);
@@ -1272,16 +1260,15 @@ void test_bit_brain_layer(s::queue &q)
     // Test getters
     passed = (brain.get_current_threshold() > 0.0f);
     report_test({"BitBrainLayer get_current_threshold", passed, ""});
-
 }
 
 // ============================================================
 // Main
 // ============================================================
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     size_t bench_batch = 32;
-    
+
     // Parse batch size argument
     for (int i = 1; i < argc; i++)
     {
@@ -1291,14 +1278,13 @@ int main(int argc, char* argv[])
             bench_batch = std::stoul(argv[++i]);
         }
     }
-    
+
     std::cout << "+============================================================+\n";
     std::cout << "|         PNB-X Complete Module Test Suite                 |\n";
     std::cout << "+============================================================+\n";
 
     // SYCL device selection
-    auto selector = [](const s::device &d)
-    {
+    auto selector = [](const s::device &d) {
         if (d.is_gpu() && d.get_info<s::info::device::vendor>().find("Intel") != std::string::npos)
             return 1;
         return 0;
@@ -1313,8 +1299,8 @@ int main(int argc, char* argv[])
         printf("Driver: {}\n", device.get_info<s::info::device::driver_version>());
         printf("Max Compute Units: {}\n", device.get_info<s::info::device::max_compute_units>());
         printf("Max Work Group Size: {}\n", device.get_info<s::info::device::max_work_group_size>());
-        printf("Global Memory: {:.2f} GB\n", 
-                   device.get_info<s::info::device::global_mem_size>() / (1024.0 * 1024.0 * 1024.0));
+        printf("Global Memory: {:.2f} GB\n",
+               device.get_info<s::info::device::global_mem_size>() / (1024.0 * 1024.0 * 1024.0));
 
         // Run all tests
         test_types();
@@ -1336,7 +1322,7 @@ int main(int argc, char* argv[])
         std::cout << "+============================================================+\n";
 
         bool tests_passed = (passed_tests == total_tests);
-        
+
         if (tests_passed)
         {
             std::cout << "\n✅ ALL TESTS PASSED!\n";
@@ -1345,26 +1331,31 @@ int main(int argc, char* argv[])
         {
             std::cout << "\n❌ SOME TESTS FAILED!\n";
         }
-        
+
         // Run performance benchmarks
         std::cout << "\n+============================================================+\n";
         std::cout << "|              PERFORMANCE BENCHMARKS                       |\n";
         std::cout << "+============================================================+\n";
-        
+
         std::cout << "\n=== Basic Layer Benchmarks ===\n";
         benchmark_bit_linear(q, bench_batch);
         benchmark_bit_linear_xmx(q, bench_batch);
         benchmark_ssm_scan(q, bench_batch);
         benchmark_spike_neuron(q, bench_batch);
         benchmark_hippocampus(q, bench_batch);
-        
+
         std::cout << "\n=== BitLinear Parallel Scaling Test ===\n";
         std::cout << "+---------------------+------------+-----------+------------+----------+\n";
         std::cout << "| Config              |   Elements |  Time(ms) |       GOPS |    GB/s  |\n";
         std::cout << "+---------------------+------------+-----------+------------+----------+\n";
-        for (auto [b, m, n] : std::vector<std::tuple<size_t, size_t, size_t>>{
-            {1, 256, 256}, {1, 512, 512}, {1, 1024, 1024}, {1, 2048, 2048}, {1, 4096, 4096},
-            {16, 1024, 1024}, {64, 1024, 1024}, {256, 1024, 1024}})
+        for (auto [b, m, n] : std::vector<std::tuple<size_t, size_t, size_t>>{{1, 256, 256},
+                                                                              {1, 512, 512},
+                                                                              {1, 1024, 1024},
+                                                                              {1, 2048, 2048},
+                                                                              {1, 4096, 4096},
+                                                                              {16, 1024, 1024},
+                                                                              {64, 1024, 1024},
+                                                                              {256, 1024, 1024}})
         {
             using namespace neurobit::layers;
             BitLinearXMX layer({b, m, n});
@@ -1376,11 +1367,13 @@ int main(int argc, char* argv[])
             s::buffer<int8_t, 1> buf_W{h_W};
             s::buffer<float, 1> buf_Y{h_Y};
 
-            for (int i = 0; i < 3; i++) layer.forward(q, buf_X, buf_W, buf_Y);
+            for (int i = 0; i < 3; i++)
+                layer.forward(q, buf_X, buf_W, buf_Y);
             q.wait();
 
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < 10; i++) layer.forward(q, buf_X, buf_W, buf_Y);
+            for (int i = 0; i < 10; i++)
+                layer.forward(q, buf_X, buf_W, buf_Y);
             q.wait();
             auto end = std::chrono::high_resolution_clock::now();
 
@@ -1391,18 +1384,21 @@ int main(int argc, char* argv[])
             double gb_s = bytes * 10 / (time_ms / 1000.0) / 1e9;
 
             std::string config = std::format("{}x{}x{}", b, m, n);
-            printf("| {:<19} | {:>10} | {:>9.3f} | {:>10.2f} | {:>8.2f} |\n",
-                       config, b*m*n, time_ms, gops, gb_s);
+            printf("| {:<19} | {:>10} | {:>9.3f} | {:>10.2f} | {:>8.2f} |\n", config, b * m * n, time_ms, gops, gb_s);
         }
         std::cout << "+---------------------+------------+-----------+------------+----------+\n";
-        
+
         std::cout << "\n=== SSM Parallel Scaling Test ===\n";
         std::cout << "+---------------------+------------+-----------+--------------+\n";
         std::cout << "| Config (BxLxD)      |   Elements |  Time(ms) |    M elem/s  |\n";
         std::cout << "+---------------------+------------+-----------+--------------+\n";
-        for (auto [b, l, d] : std::vector<std::tuple<size_t, size_t, size_t>>{
-            {1, 1, 1024}, {1, 1, 4096}, {1, 1, 16384}, {1, 1, 65536},
-            {16, 1, 4096}, {64, 1, 4096}, {256, 1, 4096}})
+        for (auto [b, l, d] : std::vector<std::tuple<size_t, size_t, size_t>>{{1, 1, 1024},
+                                                                              {1, 1, 4096},
+                                                                              {1, 1, 16384},
+                                                                              {1, 1, 65536},
+                                                                              {16, 1, 4096},
+                                                                              {64, 1, 4096},
+                                                                              {256, 1, 4096}})
         {
             using namespace neurobit::layers;
             SSMScan layer({b, l, d, true});
@@ -1416,11 +1412,13 @@ int main(int argc, char* argv[])
             s::buffer<float, 1> buf_Y{h_Y};
             s::buffer<float, 1> buf_State{h_State};
 
-            for (int i = 0; i < 3; i++) layer.forward_single(q, buf_X, buf_A, buf_Y, buf_State);
+            for (int i = 0; i < 3; i++)
+                layer.forward_single(q, buf_X, buf_A, buf_Y, buf_State);
             q.wait();
 
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < 100; i++) layer.forward_single(q, buf_X, buf_A, buf_Y, buf_State);
+            for (int i = 0; i < 100; i++)
+                layer.forward_single(q, buf_X, buf_A, buf_Y, buf_State);
             q.wait();
             auto end = std::chrono::high_resolution_clock::now();
 
@@ -1428,17 +1426,16 @@ int main(int argc, char* argv[])
             double m_elem_s = (b * d * 100) / (time_ms / 1000.0) / 1e6;
 
             std::string config = std::format("{}x{}x{}", b, l, d);
-            printf("| {:<19} | {:>10} | {:>9.4f} | {:>12.2f} |\n", config, b*l*d, time_ms, m_elem_s);
+            printf("| {:<19} | {:>10} | {:>9.4f} | {:>12.2f} |\n", config, b * l * d, time_ms, m_elem_s);
         }
         std::cout << "+---------------------+------------+-----------+--------------+\n";
-        
+
         std::cout << "\n=== SNN Parallel Scaling Test ===\n";
         std::cout << "+-----------------+------------+-----------+--------------+------------+\n";
         std::cout << "| Config (BxN)    |    Neurons |  Time(ms) |  M neurons/s |     Spikes |\n";
         std::cout << "+-----------------+------------+-----------+--------------+------------+\n";
         for (auto [b, n] : std::vector<std::pair<size_t, size_t>>{
-            {1, 1024}, {1, 4096}, {1, 16384}, {1, 65536}, {1, 262144},
-            {16, 16384}, {64, 16384}})
+                 {1, 1024}, {1, 4096}, {1, 16384}, {1, 65536}, {1, 262144}, {16, 16384}, {64, 16384}})
         {
             using namespace neurobit::layers;
             SpikeNeuron layer({b, 1, n});
@@ -1454,36 +1451,39 @@ int main(int argc, char* argv[])
             s::buffer<float, 1> buf_OU{h_OU};
             s::buffer<int, 1> buf_Act{h_Act};
 
-            for (int i = 0; i < 3; i++) layer.forward_single(q, buf_X, buf_V, buf_Z, buf_OU, buf_Act);
+            for (int i = 0; i < 3; i++)
+                layer.forward_single(q, buf_X, buf_V, buf_Z, buf_OU, buf_Act);
             q.wait();
 
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < 100; i++) layer.forward_single(q, buf_X, buf_V, buf_Z, buf_OU, buf_Act);
+            for (int i = 0; i < 100; i++)
+                layer.forward_single(q, buf_X, buf_V, buf_Z, buf_OU, buf_Act);
             q.wait();
             auto end = std::chrono::high_resolution_clock::now();
 
             s::host_accessor acc{buf_Act};
             int spike_count = 0;
-            for (size_t i = 0; i < b * n; i++) spike_count += acc[i];
+            for (size_t i = 0; i < b * n; i++)
+                spike_count += acc[i];
 
             double time_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() / 100000.0;
             double m_neurons_s = (b * n * 100) / (time_ms / 1000.0) / 1e6;
 
             std::string config = std::format("{}x{}", b, n);
-            printf("| {:<15} | {:>10} | {:>9.4f} | {:>12.2f} | {:>10} |\n",
-                       config, b*n, time_ms, m_neurons_s, spike_count);
+            printf("| {:<15} | {:>10} | {:>9.4f} | {:>12.2f} | {:>10} |\n", config, b * n, time_ms, m_neurons_s,
+                   spike_count);
         }
         std::cout << "+-----------------+------------+-----------+--------------+------------+\n";
-        
+
         std::cout << "\n=== BitBrainLayer Full Scale Test ===\n";
         std::cout << "+-----------------------+----------+----------+-----------+--------------+\n";
         std::cout << "| Config                |  Neurons |  Weights |  Avg(ms)  |    Neurons/s |\n";
         std::cout << "+-----------------------+----------+----------+-----------+--------------+\n";
-        for (auto [name, in, hid, out] : std::vector<std::tuple<std::string, size_t, size_t, size_t>>{
-            {"Small (64-128-10)", 64, 128, 10},
-            {"Medium (128-256-32)", 128, 256, 32},
-            {"Large (256-512-64)", 256, 512, 64},
-            {"XLarge (512-1024-128)", 512, 1024, 128}})
+        for (auto [name, in, hid, out] :
+             std::vector<std::tuple<std::string, size_t, size_t, size_t>>{{"Small (64-128-10)", 64, 128, 10},
+                                                                          {"Medium (128-256-32)", 128, 256, 32},
+                                                                          {"Large (256-512-64)", 256, 512, 64},
+                                                                          {"XLarge (512-1024-128)", 512, 1024, 128}})
         {
             const size_t total_neurons = hid;
             const size_t total_weights = in * hid + hid * out;
@@ -1501,48 +1501,52 @@ int main(int argc, char* argv[])
             const int iterations = 5;
 
             // Warmup
-            for (int i = 0; i < warmup; i++) {
-                q.submit([&](s::handler& h) {
-                    auto in_acc = input_buf.get_access<s::access::mode::read>(h);
-                    auto hid_acc = hidden_buf.get_access<s::access::mode::write>(h);
-                    h.parallel_for(s::range<1>(batch_size * hid), [=](s::id<1> idx) {
-                        size_t batch_idx = idx[0] / hid;
-                        size_t neuron_idx = idx[0] % hid;
-                        float sum = 0.0f;
-                        for (size_t j = 0; j < in; j++) {
-                            sum += in_acc[batch_idx * in + j];
-                        }
-                        hid_acc[idx[0]] = (sum > 0) ? 1.0f : -1.0f;
-                    });
-                }).wait();
+            for (int i = 0; i < warmup; i++)
+            {
+                q.submit([&](s::handler &h) {
+                     auto in_acc = input_buf.get_access<s::access::mode::read>(h);
+                     auto hid_acc = hidden_buf.get_access<s::access::mode::write>(h);
+                     h.parallel_for(s::range<1>(batch_size * hid), [=](s::id<1> idx) {
+                         size_t batch_idx = idx[0] / hid;
+                         size_t neuron_idx = idx[0] % hid;
+                         float sum = 0.0f;
+                         for (size_t j = 0; j < in; j++)
+                         {
+                             sum += in_acc[batch_idx * in + j];
+                         }
+                         hid_acc[idx[0]] = (sum > 0) ? 1.0f : -1.0f;
+                     });
+                 }).wait();
             }
 
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < iterations; i++) {
-                q.submit([&](s::handler& h) {
-                    auto in_acc = input_buf.get_access<s::access::mode::read>(h);
-                    auto hid_acc = hidden_buf.get_access<s::access::mode::write>(h);
-                    h.parallel_for(s::range<1>(batch_size * hid), [=](s::id<1> idx) {
-                        size_t batch_idx = idx[0] / hid;
-                        size_t neuron_idx = idx[0] % hid;
-                        float sum = 0.0f;
-                        for (size_t j = 0; j < in; j++) {
-                            sum += in_acc[batch_idx * in + j];
-                        }
-                        hid_acc[idx[0]] = (sum > 0) ? 1.0f : -1.0f;
-                    });
-                }).wait();
+            for (int i = 0; i < iterations; i++)
+            {
+                q.submit([&](s::handler &h) {
+                     auto in_acc = input_buf.get_access<s::access::mode::read>(h);
+                     auto hid_acc = hidden_buf.get_access<s::access::mode::write>(h);
+                     h.parallel_for(s::range<1>(batch_size * hid), [=](s::id<1> idx) {
+                         size_t batch_idx = idx[0] / hid;
+                         size_t neuron_idx = idx[0] % hid;
+                         float sum = 0.0f;
+                         for (size_t j = 0; j < in; j++)
+                         {
+                             sum += in_acc[batch_idx * in + j];
+                         }
+                         hid_acc[idx[0]] = (sum > 0) ? 1.0f : -1.0f;
+                     });
+                 }).wait();
             }
             auto end = std::chrono::high_resolution_clock::now();
 
             double avg_time = std::chrono::duration<double, std::milli>(end - start).count() / iterations;
             double neurons_per_sec = (batch_size * total_neurons) / (avg_time / 1000.0);
 
-            printf("| {:<21} | {:>8} | {:>8} | {:>9.3f} | {:>12.2e} |\n",
-                name, total_neurons, total_weights, avg_time, neurons_per_sec);
+            printf("| {:<21} | {:>8} | {:>8} | {:>9.3f} | {:>12.2e} |\n", name, total_neurons, total_weights, avg_time,
+                   neurons_per_sec);
         }
         std::cout << "+-----------------------+----------+----------+-----------+--------------+\n";
-        
+
         std::cout << "\n=== Parallel Efficiency Analysis ===\n";
         std::cout << "+------------+-----------+-----------+--------------+------------+\n";
         std::cout << "| Work Items | Work/Item |  Time(ms) |   Throughput | Efficiency |\n";
@@ -1557,12 +1561,13 @@ int main(int argc, char* argv[])
             s::buffer<float, 1> buf{data};
 
             auto start = std::chrono::high_resolution_clock::now();
-            q.submit([&](s::handler& h) {
+            q.submit([&](s::handler &h) {
                 auto acc = buf.get_access<s::access::mode::read_write>(h);
                 h.parallel_for(s::range<1>(work_items), [=](s::id<1> idx) {
                     size_t base = idx[0] * work_per_item;
                     float sum = 0.0f;
-                    for (size_t i = 0; i < work_per_item; i++) {
+                    for (size_t i = 0; i < work_per_item; i++)
+                    {
                         sum += acc[base + i];
                     }
                     acc[base] = sum;
@@ -1573,18 +1578,19 @@ int main(int argc, char* argv[])
 
             double time_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() / 1000.0;
             double throughput = total_work / (time_ms / 1000.0) / 1e6;
-            if (baseline_throughput == 0.0) baseline_throughput = throughput;
+            if (baseline_throughput == 0.0)
+                baseline_throughput = throughput;
             double efficiency = (throughput / baseline_throughput) * 100.0;
 
-            printf("| {:>10} | {:>9} | {:>9.4f} | {:>9.2f} M/s | {:>9.1f}% |\n",
-                       work_items, work_per_item, time_ms, throughput, efficiency);
+            printf("| {:>10} | {:>9} | {:>9.4f} | {:>9.2f} M/s | {:>9.1f}% |\n", work_items, work_per_item, time_ms,
+                   throughput, efficiency);
         }
         std::cout << "+------------+-----------+-----------+--------------+------------+\n";
-        
+
         std::cout << "\n+============================================================+\n";
         std::cout << "|            BENCHMARKS COMPLETED                           |\n";
         std::cout << "+============================================================+\n";
-        
+
         return tests_passed ? 0 : 1;
     }
     catch (const s::exception &e)
