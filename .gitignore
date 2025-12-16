@@ -60,6 +60,11 @@
 # Local experiment logs
 gemini-conversation-*.json
 
+# Checkpoints / local training logs
+checkpoints/
+*.pnbckpt
+訓練資訊.md
+
 # Editor/OS
 .DS_Store
 .direnv/

@@ -30,14 +30,15 @@ class SSMScan
     void forward(s::queue &q, s::buffer<float, 1> &buf_X, // Input [B*L*D] or [B*D]
                  s::buffer<float, 1> &buf_A,              // SSM coefficients [D]
                  s::buffer<float, 1> &buf_Y,              // Output [B*L*D] or [B*D]
-                 s::buffer<float, 1> &buf_State)          // Persistent state [B*D]
+                 s::buffer<float, 1> &buf_State,          // Persistent state [B*D]
+                 std::vector<s::event> *profile_events = nullptr)
     {
         const size_t B = cfg_.batch_size;
         const size_t L = cfg_.seq_len;
         const size_t D = cfg_.state_dim;
         const bool use_tanh = cfg_.use_stability_constraint;
 
-        q.submit([&](s::handler &h) {
+        auto ev = q.submit([&](s::handler &h) {
             s::accessor acc_X{buf_X, h, s::read_only};
             s::accessor acc_A{buf_A, h, s::read_only};
             s::accessor acc_Y{buf_Y, h, s::write_only, s::no_init};
@@ -71,19 +72,22 @@ class SSMScan
                 acc_S[b * D + d] = current_state;
             });
         });
+        if (profile_events)
+            profile_events->push_back(ev);
     }
 
     // 簡化版本: 單步更新 (seq_len=1)
     void forward_single(s::queue &q, s::buffer<float, 1> &buf_X, // Input [B*D]
                         s::buffer<float, 1> &buf_A,              // SSM coefficients [D]
                         s::buffer<float, 1> &buf_Y,              // Output [B*D]
-                        s::buffer<float, 1> &buf_State)          // Persistent state [B*D]
+                        s::buffer<float, 1> &buf_State,          // Persistent state [B*D]
+                        std::vector<s::event> *profile_events = nullptr)
     {
         const size_t B = cfg_.batch_size;
         const size_t D = cfg_.state_dim;
         const bool use_tanh = cfg_.use_stability_constraint;
 
-        q.submit([&](s::handler &h) {
+        auto ev = q.submit([&](s::handler &h) {
             s::accessor acc_X{buf_X, h, s::read_only};
             s::accessor acc_A{buf_A, h, s::read_only};
             s::accessor acc_Y{buf_Y, h, s::write_only, s::no_init};
@@ -107,16 +111,20 @@ class SSMScan
                 acc_Y[linear_idx] = new_state;
             });
         });
+        if (profile_events)
+            profile_events->push_back(ev);
     }
 
     // 重置狀態
-    void reset_state(s::queue &q, s::buffer<float, 1> &buf_State)
+    void reset_state(s::queue &q, s::buffer<float, 1> &buf_State, std::vector<s::event> *profile_events = nullptr)
     {
         const size_t total = cfg_.batch_size * cfg_.state_dim;
-        q.submit([&](s::handler &h) {
+        auto ev = q.submit([&](s::handler &h) {
             s::accessor acc_S{buf_State, h, s::write_only, s::no_init};
             h.parallel_for(s::range<1>{total}, [=](s::id<1> idx) { acc_S[idx] = 0.0f; });
         });
+        if (profile_events)
+            profile_events->push_back(ev);
     }
 
   private:

@@ -2,6 +2,7 @@
 #include "neurobit/core/types.hpp"
 #include <cmath>
 #include <sycl/sycl.hpp>
+#include <vector>
 
 namespace neurobit
 {
@@ -58,27 +59,44 @@ class Hippocampus
     {
     }
 
-    /**
-     * 計算熟悉度評分
-     * 使用餘弦相似度衡量輸入與記憶的匹配程度
-     */
-    RecallResult compute_familiarity(s::queue &q, s::buffer<float, 1> &buf_X, // 輸入 [input_dim]
-                                     s::buffer<float, 1> &buf_W_fast,         // 快速權重 [input_dim * hidden_dim]
-                                     s::buffer<float, 1> &buf_W_slow)         // 慢速權重 [input_dim * hidden_dim]
+    ~Hippocampus()
     {
+        if (!usm_initialized_)
+            return;
+        s::free(d_dot_product_, usm_context_);
+        s::free(d_input_norm_, usm_context_);
+        s::free(d_memory_norm_, usm_context_);
+        s::free(d_familiarity_, usm_context_);
+        usm_initialized_ = false;
+        d_dot_product_ = nullptr;
+        d_input_norm_ = nullptr;
+        d_memory_norm_ = nullptr;
+        d_familiarity_ = nullptr;
+    }
+
+    const float *enqueue_familiarity(s::queue &q, s::buffer<float, 1> &buf_X, s::buffer<float, 1> &buf_W_fast,
+                                     s::buffer<float, 1> &buf_W_slow, std::vector<s::event> *profile_events = nullptr)
+    {
+        ensure_usm(q);
+
         const size_t M = cfg_.input_dim;
         const size_t N = cfg_.hidden_dim;
+        float *d_dot_product = d_dot_product_;
+        float *d_input_norm = d_input_norm_;
+        float *d_memory_norm = d_memory_norm_;
+        float *d_familiarity = d_familiarity_;
 
-        // USM 用於存儲結果
-        float *d_dot_product = s::malloc_shared<float>(1, q);
-        float *d_input_norm = s::malloc_shared<float>(1, q);
-        float *d_memory_norm = s::malloc_shared<float>(1, q);
-        *d_dot_product = 0.0f;
-        *d_input_norm = 0.0f;
-        *d_memory_norm = 0.0f;
+        auto ev0 = q.submit([&](s::handler &h) {
+            h.single_task([=]() {
+                *d_dot_product = 0.0f;
+                *d_input_norm = 0.0f;
+                *d_memory_norm = 0.0f;
+            });
+        });
+        if (profile_events)
+            profile_events->push_back(ev0);
 
-        // 計算輸入向量範數和記憶響應
-        q.submit([&](s::handler &h) {
+        auto ev1 = q.submit([&](s::handler &h) {
             s::accessor acc_X{buf_X, h, s::read_only};
             s::accessor acc_Wf{buf_W_fast, h, s::read_only};
             s::accessor acc_Ws{buf_W_slow, h, s::read_only};
@@ -87,39 +105,62 @@ class Hippocampus
                 size_t i = idx[0];
                 float x = acc_X[i];
 
-                // 輸入能量
-                s::atomic_ref<float, s::memory_order::relaxed, s::memory_scope::device> atomic_input_norm(
-                    *d_input_norm);
+                s::atomic_ref<float, s::memory_order::relaxed, s::memory_scope::device,
+                              s::access::address_space::global_space>
+                    atomic_input_norm(*d_input_norm);
                 atomic_input_norm += x * x;
 
-                // 計算該輸入維度在記憶中的投影 (帶符號)
                 float mem_projection = 0.0f;
                 float mem_norm_sq = 0.0f;
                 for (size_t j = 0; j < N; ++j)
                 {
                     float w = acc_Wf[i * N + j] + acc_Ws[i * N + j];
-                    mem_projection += w * x; // 投影 (保留符號)
+                    mem_projection += w * x;
                     mem_norm_sq += w * w;
                 }
 
-                s::atomic_ref<float, s::memory_order::relaxed, s::memory_scope::device> atomic_mem_norm(*d_memory_norm);
+                s::atomic_ref<float, s::memory_order::relaxed, s::memory_scope::device,
+                              s::access::address_space::global_space>
+                    atomic_mem_norm(*d_memory_norm);
                 atomic_mem_norm += mem_norm_sq;
 
-                // 點積: 輸入與記憶的有向相關性
-                s::atomic_ref<float, s::memory_order::relaxed, s::memory_scope::device> atomic_dot(*d_dot_product);
-                atomic_dot += mem_projection; // 修正: 使用帶符號的投影
+                s::atomic_ref<float, s::memory_order::relaxed, s::memory_scope::device,
+                              s::access::address_space::global_space>
+                    atomic_dot(*d_dot_product);
+                atomic_dot += mem_projection;
             });
         });
+        if (profile_events)
+            profile_events->push_back(ev1);
 
+        auto ev2 = q.submit([&](s::handler &h) {
+            h.single_task([=]() {
+                float input_norm = s::sqrt(*d_input_norm + 1e-8f);
+                float memory_norm = s::sqrt(*d_memory_norm + 1e-8f);
+                float dot_product = *d_dot_product;
+
+                float familiarity = dot_product / (input_norm * memory_norm + 1e-8f);
+                *d_familiarity = s::clamp(familiarity, 0.0f, 1.0f);
+            });
+        });
+        if (profile_events)
+            profile_events->push_back(ev2);
+
+        return d_familiarity_;
+    }
+
+    /**
+     * 計算熟悉度評分
+     * 使用餘弦相似度衡量輸入與記憶的匹配程度
+     */
+    RecallResult compute_familiarity(s::queue &q, s::buffer<float, 1> &buf_X, // 輸入 [input_dim]
+                                     s::buffer<float, 1> &buf_W_fast,         // 快速權重 [input_dim * hidden_dim]
+                                     s::buffer<float, 1> &buf_W_slow,         // 慢速權重 [input_dim * hidden_dim]
+                                     std::vector<s::event> *profile_events = nullptr)
+    {
+        const float *familiarity_ptr = enqueue_familiarity(q, buf_X, buf_W_fast, buf_W_slow, profile_events);
         q.wait();
-
-        // 計算餘弦相似度
-        float input_norm = std::sqrt(*d_input_norm + 1e-8f);
-        float memory_norm = std::sqrt(*d_memory_norm + 1e-8f);
-        float dot_product = *d_dot_product;
-
-        float familiarity = dot_product / (input_norm * memory_norm + 1e-8f);
-        familiarity = std::clamp(familiarity, 0.0f, 1.0f);
+        float familiarity = std::clamp(*familiarity_ptr, 0.0f, 1.0f);
 
         // 根據熟悉度計算建議閾值
         // 熟悉 -> 使用學習到的閾值 (更快收斂)
@@ -135,10 +176,6 @@ class Hippocampus
             // 熟悉輸入: 直接使用學習到的閾值
             suggested_th = learned_threshold_ * (1.0f - familiarity * cfg_.priming_strength * 0.2f);
         }
-
-        s::free(d_dot_product, q);
-        s::free(d_input_norm, q);
-        s::free(d_memory_norm, q);
 
         last_familiarity_ = familiarity;
 
@@ -306,6 +343,29 @@ class Hippocampus
     Config cfg_;
     float last_familiarity_;
     float learned_threshold_;
+
+    void ensure_usm(s::queue &q)
+    {
+        if (usm_initialized_)
+            return;
+        usm_context_ = q.get_context();
+        d_dot_product_ = s::malloc_shared<float>(1, q);
+        d_input_norm_ = s::malloc_shared<float>(1, q);
+        d_memory_norm_ = s::malloc_shared<float>(1, q);
+        d_familiarity_ = s::malloc_shared<float>(1, q);
+        *d_dot_product_ = 0.0f;
+        *d_input_norm_ = 0.0f;
+        *d_memory_norm_ = 0.0f;
+        *d_familiarity_ = 0.0f;
+        usm_initialized_ = true;
+    }
+
+    bool usm_initialized_ = false;
+    s::context usm_context_{};
+    float *d_dot_product_ = nullptr;
+    float *d_input_norm_ = nullptr;
+    float *d_memory_norm_ = nullptr;
+    float *d_familiarity_ = nullptr;
 };
 
 } // namespace components
