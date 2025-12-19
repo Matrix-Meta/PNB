@@ -65,7 +65,7 @@ checkpoints/
 *.ckpt
 *.pnbckpt
 /exports/
-
+.envrc
 
 # Local config
 config.toml
