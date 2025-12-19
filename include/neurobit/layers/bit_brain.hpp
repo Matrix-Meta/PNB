@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Project Neuro-Bit Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 
 #include "neurobit/components/glial.hpp"
@@ -10,6 +26,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <string>
 #include <sycl/sycl.hpp>
 #include <vector>
 
@@ -89,7 +106,6 @@ class BitBrainLayer
         target_sparsity_ = s::malloc_shared<float>(1, queue_);
         glial_state_ = s::malloc_shared<DeviceGlialState>(1, queue_);
         glial_threshold_snapshot_ = s::malloc_shared<float>(1, queue_);
-        effective_batch_size_ = s::malloc_shared<uint32_t>(1, queue_);
 
         for (size_t g = 0; g < gc; ++g)
         {
@@ -103,7 +119,7 @@ class BitBrainLayer
         *total_active_count_ = 0u;
         *target_sparsity_ = std::clamp(cfg_.glial_config.target_sparsity, 0.0f, 1.0f);
         *glial_threshold_snapshot_ = cfg_.glial_config.initial_threshold;
-        *effective_batch_size_ = static_cast<uint32_t>(cfg_.batch_size);
+        effective_batch_size_host_ = static_cast<uint32_t>(cfg_.batch_size);
 
         glial_state_->current_threshold = cfg_.glial_config.initial_threshold;
         glial_state_->current_lr = cfg_.glial_config.initial_lr;
@@ -148,8 +164,12 @@ class BitBrainLayer
         // SSM params (fixed/learned?)
         // For non-sequential tasks like image classification batches, we want minimal history interference.
         // Setting A to 0.0 makes S[t] = X[t], effectively bypassing the recurrent state.
-        std::vector<float> h_A(cfg.hidden_dim, 0.0f);
-        buf_SSM_A = new s::buffer<float, 1>(h_A.data(), s::range<1>(cfg.hidden_dim));
+        buf_SSM_A = new s::buffer<float, 1>(s::range<1>(cfg.hidden_dim));
+        {
+            s::host_accessor acc(*buf_SSM_A, s::write_only);
+            for (size_t i = 0; i < cfg.hidden_dim; ++i)
+                acc[i] = 0.0f;
+        }
         buf_SSM_State = new s::buffer<float, 1>(s::range<1>(cfg.batch_size * cfg.hidden_dim));
     }
 
@@ -167,8 +187,6 @@ class BitBrainLayer
             s::free(glial_state_, usm_context_);
         if (glial_threshold_snapshot_)
             s::free(glial_threshold_snapshot_, usm_context_);
-        if (effective_batch_size_)
-            s::free(effective_batch_size_, usm_context_);
 
         delete buf_H_proj;
         delete buf_H_ssm;
@@ -353,12 +371,92 @@ class BitBrainLayer
             copy_f32(*buf_SSM_State, out.ssm_state);
     }
 
+    bool import_checkpoint_host(const CheckpointState &st, s::buffer<float, 1> &w_fast, s::buffer<float, 1> &w_slow,
+                                std::string *error = nullptr)
+    {
+        auto fail = [&](const std::string &msg) {
+            if (error)
+                *error = msg;
+            return false;
+        };
+
+        if (st.input_dim != cfg_.input_dim || st.hidden_dim != cfg_.hidden_dim || st.output_dim != cfg_.output_dim ||
+            st.batch_size != cfg_.batch_size || st.seq_len != cfg_.seq_len)
+        {
+            return fail("檢查點維度不相容");
+        }
+
+        if (st.md_group_size != activation_.group_size() || st.md_group_count != activation_.group_count())
+        {
+            return fail("檢查點M-DSiLU分組設定不相容");
+        }
+
+        if (st.md_group_offsets.size() != activation_.group_count())
+        {
+            return fail("檢查點M-DSiLU分組偏移大小不正確");
+        }
+
+        if (glial_state_)
+            *glial_state_ = st.glial_state;
+        if (target_sparsity_)
+            *target_sparsity_ = std::clamp(st.target_sparsity, 0.0f, 1.0f);
+        if (glial_threshold_snapshot_)
+            *glial_threshold_snapshot_ = st.glial_threshold_snapshot;
+
+        glial_.set_target_sparsity(std::clamp(st.target_sparsity, 0.0f, 1.0f));
+        glial_.set_threshold(st.glial_state.current_threshold);
+
+        hippocampus_.set_learned_threshold(st.hippocampus_learned_threshold);
+
+        neuromodulator_.set_learned_weights(st.neuromodulator_w);
+        neuromodulator_.set_last_control(st.neuromodulator_last);
+
+        activation_.vigilance = st.md_vigilance;
+        activation_.tau = st.md_tau;
+        activation_.alpha = st.md_alpha;
+        activation_.novelty_power = st.md_novelty_power;
+        activation_.novelty_sharpness = st.md_novelty_sharpness;
+        activation_.set_group_offsets_host(st.md_group_offsets);
+
+        auto copy_into_buf = [&](s::buffer<float, 1> &buf, const std::vector<float> &src) {
+            size_t n = buf.get_range().size();
+            if (src.size() != n)
+                return false;
+            s::host_accessor acc(buf, s::write_only);
+            for (size_t i = 0; i < n; ++i)
+                acc[i] = src[i];
+            return true;
+        };
+
+        if (!copy_into_buf(proj_in_.weight, st.proj_in_weight) || !copy_into_buf(proj_in_.bias, st.proj_in_bias) ||
+            !copy_into_buf(proj_mid1_.weight, st.proj_mid1_weight) ||
+            !copy_into_buf(proj_mid1_.bias, st.proj_mid1_bias) ||
+            !copy_into_buf(proj_mid2_.weight, st.proj_mid2_weight) ||
+            !copy_into_buf(proj_mid2_.bias, st.proj_mid2_bias) ||
+            !copy_into_buf(proj_out_.weight, st.proj_out_weight) || !copy_into_buf(proj_out_.bias, st.proj_out_bias))
+        {
+            return fail("檢查點BitLinear權重大小不相容");
+        }
+
+        if (!copy_into_buf(w_fast, st.w_fast) || !copy_into_buf(w_slow, st.w_slow))
+            return fail("檢查點Hippocampus記憶權重大小不相容");
+
+        if (buf_SSM_A && !copy_into_buf(*buf_SSM_A, st.ssm_A))
+            return fail("檢查點SSM_A大小不相容");
+        if (buf_SSM_State && !copy_into_buf(*buf_SSM_State, st.ssm_state))
+            return fail("檢查點SSM_State大小不相容");
+
+        proj_in_.weights_quantized = false;
+        proj_mid1_.weights_quantized = false;
+        proj_mid2_.weights_quantized = false;
+        proj_out_.weights_quantized = false;
+        return true;
+    }
+
     void set_effective_batch_size(size_t effective_batch)
     {
-        if (!effective_batch_size_)
-            return;
         effective_batch = std::max<size_t>(1, std::min(effective_batch, cfg_.batch_size));
-        *effective_batch_size_ = static_cast<uint32_t>(effective_batch);
+        effective_batch_size_host_ = static_cast<uint32_t>(effective_batch);
 
         if (!group_total_counts_)
             return;
@@ -397,9 +495,7 @@ class BitBrainLayer
     void backward(s::buffer<float, 1> &grad_output, s::buffer<float, 1> &grad_input,
                   std::vector<s::event> *profile_events = nullptr)
     {
-        size_t batch = cfg_.batch_size;
-        if (effective_batch_size_)
-            batch = std::min(batch, static_cast<size_t>(*effective_batch_size_));
+        size_t batch = std::min(cfg_.batch_size, static_cast<size_t>(effective_batch_size_host_));
         size_t hidden = cfg_.hidden_dim;
 
         // 1. Output Projection
@@ -469,9 +565,7 @@ class BitBrainLayer
     void forward_impl(s::buffer<float, 1> &input, s::buffer<float, 1> &output, s::buffer<float, 1> &w_fast,
                       s::buffer<float, 1> &w_slow, std::vector<s::event> *profile_events, bool training)
     {
-        size_t batch = cfg_.batch_size;
-        if (effective_batch_size_)
-            batch = std::min(batch, static_cast<size_t>(*effective_batch_size_));
+        size_t batch = std::min(cfg_.batch_size, static_cast<size_t>(effective_batch_size_host_));
         size_t hidden = cfg_.hidden_dim;
         size_t total_neurons = batch * hidden * 3;
 
@@ -711,7 +805,7 @@ class BitBrainLayer
     float *target_sparsity_ = nullptr;
     DeviceGlialState *glial_state_ = nullptr;
     float *glial_threshold_snapshot_ = nullptr;
-    uint32_t *effective_batch_size_ = nullptr;
+    uint32_t effective_batch_size_host_ = 1;
     const float *familiarity_ptr_ = nullptr;
 
     // Private helper for LayerNorm (declarations)

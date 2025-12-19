@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Project Neuro-Bit Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 #include <sycl/ext/oneapi/bfloat16.hpp>
 #include <sycl/sycl.hpp>
@@ -99,23 +115,29 @@ class XMXSupport
      */
     static void print_support_info(const s::device &device)
     {
-        std::cout << "XMX Support Information:\n";
-        std::cout << "  Device: " << device.get_info<s::info::device::name>() << "\n";
+        std::cout << "XMX Support Information:
+";
+        std::cout << "  Device: " << device.get_info<s::info::device::name>() << "
+";
 
         auto sg_sizes = device.get_info<s::info::device::sub_group_sizes>();
         std::cout << "  Sub-group sizes: ";
         for (auto sz : sg_sizes)
             std::cout << sz << " ";
-        std::cout << "\n";
+        std::cout << "
+";
 
         bool supported = is_supported(device);
-        std::cout << "  XMX Supported: " << (supported ? "✓ YES" : "✗ NO") << "\n";
+        std::cout << "  XMX Supported: " << (supported ? "✓ YES" : "✗ NO") << "
+";
 
         if (supported)
         {
             std::cout << "  Optimal tile: " << get_tile_m() << "×" << get_tile_k() << " × " << get_tile_k() << "×"
-                      << get_tile_n() << "\n";
-            std::cout << "  Accelerated types: BF16, FP16, INT8\n";
+                      << get_tile_n() << "
+";
+            std::cout << "  Accelerated types: BF16, FP16, INT8
+";
         }
     }
 

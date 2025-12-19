@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Project Neuro-Bit Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 #include <algorithm>
 #include <cmath>
@@ -158,43 +174,71 @@ class AdaptiveBatchScheduler
         auto wg_size = compute_work_group_size(hidden_dim);
         auto tile = compute_tile_size(hidden_dim);
 
-        std::cout << "╔════════════════════════════════════════════════════════╗\n";
-        std::cout << "║         自適應批次調度信息                            ║\n";
-        std::cout << "╚════════════════════════════════════════════════════════╝\n\n";
+        std::cout << "╔════════════════════════════════════════════════════════╗
+";
+        std::cout << "║         自適應批次調度信息                            ║
+";
+        std::cout << "╚════════════════════════════════════════════════════════╝
 
-        std::cout << "設備資源:\n";
-        std::cout << "  Xe-Cores:        " << xe_cores_ << "\n";
-        std::cout << "  全局記憶體:      " << (max_memory_ / (1024 * 1024 * 1024)) << " GB\n";
-        std::cout << "  L2 快取:         " << (L2_CACHE_SIZE / (1024 * 1024)) << " MB\n";
-        std::cout << "  Local 記憶體:    " << (local_memory_ / 1024) << " KB\n";
-        std::cout << "  Max work-group:  " << max_work_group_size_ << "\n\n";
+";
 
-        std::cout << "模型配置:\n";
-        std::cout << "  輸入維度:        " << input_dim << "\n";
-        std::cout << "  隱藏維度:        " << hidden_dim << "\n";
-        std::cout << "  精度:            " << (precision_bytes == 2 ? "BF16" : "FP32") << "\n\n";
+        std::cout << "設備資源:
+";
+        std::cout << "  Xe-Cores:        " << xe_cores_ << "
+";
+        std::cout << "  全局記憶體:      " << (max_memory_ / (1024 * 1024 * 1024)) << " GB
+";
+        std::cout << "  L2 快取:         " << (L2_CACHE_SIZE / (1024 * 1024)) << " MB
+";
+        std::cout << "  Local 記憶體:    " << (local_memory_ / 1024) << " KB
+";
+        std::cout << "  Max work-group:  " << max_work_group_size_ << "
 
-        std::cout << "調度決策:\n";
-        std::cout << "  最優批次:        " << batch << " ✓\n";
-        std::cout << "  Work-group 大小: " << wg_size << "\n";
-        std::cout << "  Tile 大小:       " << tile << " × " << tile << "\n";
-        std::cout << "  XMX 對齊:        " << (batch % 16 == 0 ? "✓ YES" : "✗ NO") << "\n\n";
+";
+
+        std::cout << "模型配置:
+";
+        std::cout << "  輸入維度:        " << input_dim << "
+";
+        std::cout << "  隱藏維度:        " << hidden_dim << "
+";
+        std::cout << "  精度:            " << (precision_bytes == 2 ? "BF16" : "FP32") << "
+
+";
+
+        std::cout << "調度決策:
+";
+        std::cout << "  最優批次:        " << batch << " ✓
+";
+        std::cout << "  Work-group 大小: " << wg_size << "
+";
+        std::cout << "  Tile 大小:       " << tile << " × " << tile << "
+";
+        std::cout << "  XMX 對齊:        " << (batch % 16 == 0 ? "✓ YES" : "✗ NO") << "
+
+";
 
         // 性能估計
         size_t total_threads = batch * hidden_dim;
         size_t work_groups = (total_threads + wg_size - 1) / wg_size;
         float saturation = static_cast<float>(work_groups) / xe_cores_;
 
-        std::cout << "性能估計:\n";
-        std::cout << "  總線程數:        " << total_threads << "\n";
-        std::cout << "  Work-groups:     " << work_groups << "\n";
+        std::cout << "性能估計:
+";
+        std::cout << "  總線程數:        " << total_threads << "
+";
+        std::cout << "  Work-groups:     " << work_groups << "
+";
         std::cout << "  Xe-Core 飽和度:  " << (saturation * 100) << "% ";
         if (saturation >= 1.0)
-            std::cout << "✓ 飽和\n";
+            std::cout << "✓ 飽和
+";
         else
-            std::cout << "⚠️  未飽和\n";
+            std::cout << "⚠️  未飽和
+";
 
-        std::cout << "\n";
+        std::cout << "
+";
     }
 
     /**

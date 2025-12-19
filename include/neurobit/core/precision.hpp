@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Project Neuro-Bit Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 #include <sycl/sycl.hpp>
 #include <type_traits>
@@ -199,13 +215,19 @@ class PrecisionSelector
         auto device = q.get_device();
         auto best = detect_best_precision(q);
 
-        std::cout << "Device: " << device.get_info<s::info::device::name>() << "\n";
-        std::cout << "Precision Support:\n";
-        std::cout << "  FP32:  ✓ (always supported)\n";
-        std::cout << "  FP16:  " << (supports_half(device) ? "✓" : "✗") << "\n";
+        std::cout << "Device: " << device.get_info<s::info::device::name>() << "
+";
+        std::cout << "Precision Support:
+";
+        std::cout << "  FP32:  ✓ (always supported)
+";
+        std::cout << "  FP16:  " << (supports_half(device) ? "✓" : "✗") << "
+";
         std::cout << "  BF16:  " << (supports_bfloat16(device) ? "✓" : "✗")
-                  << (is_battlemage(device) ? " (Battlemage HW accelerated)" : "") << "\n";
-        std::cout << "Selected: " << precision_name(best) << "\n";
+                  << (is_battlemage(device) ? " (Battlemage HW accelerated)" : "") << "
+";
+        std::cout << "Selected: " << precision_name(best) << "
+";
     }
 };
 

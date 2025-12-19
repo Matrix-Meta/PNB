@@ -62,8 +62,13 @@ gemini-conversation-*.json
 
 # Checkpoints / local training logs
 checkpoints/
+*.ckpt
 *.pnbckpt
-訓練資訊.md
+/exports/
+
+
+# Local config
+config.toml
 
 # Editor/OS
 .DS_Store

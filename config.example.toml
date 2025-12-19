@@ -1,0 +1,67 @@
+# PNB train_mnist_surrogate 範例設定
+# 使用方式:
+# 1) 複製成 config.toml
+# 2) 執行: ./train_mnist_surrogate
+
+[model]
+in = 784
+hidden = 2048
+out = 10
+batch = 128
+
+[activity]
+# 目標活躍率(可填0~1或百分比，例如0.188或18.8)
+target = 18.8
+
+[train]
+epochs = 120
+lr = 0.01
+weight_decay = 0.0003
+seed = 1337
+profile = false
+
+[data]
+normalize = false
+mnist_mean = 0.1307
+mnist_std = 0.3081
+augment = false
+augment_shift = 1
+label_smoothing = 0.0
+
+[checkpoint]
+enable = true
+dir = "checkpoints"
+save_best = true
+save_last = true
+every = 0
+
+[export]
+enable = true
+dir = "exports"
+onnx = true
+
+[ema]
+# Exponential Moving Average評估權重(僅用於驗證，不影響訓練權重)
+enable = false
+decay = 0.999
+warmup_epochs = 0
+
+[swa]
+# Stochastic Weight Averaging評估權重(僅用於驗證，不影響訓練權重)
+enable = false
+start_epoch = 50
+freq_epochs = 1
+
+[schedule.postpeak]
+enable = true
+train_acc = 99.7
+drop = 0.1
+min_lr = 0.0003
+disable_augment = true
+disable_label_smoothing = true
+
+[schedule.val_kick]
+enable = true
+patience = 2
+drop = 0.5
+restore_best = true

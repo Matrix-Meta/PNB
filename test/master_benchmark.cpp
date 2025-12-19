@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Project Neuro-Bit Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "neurobit/components/glial.hpp"
 #include "neurobit/components/hippocampus.hpp"
 #include "neurobit/core/types.hpp"
@@ -38,11 +54,13 @@ void report_test(const TestResult &result)
     if (result.passed)
     {
         passed_tests++;
-        std::cout << "  [PASS] " << result.name << "\n";
+        std::cout << "  [PASS] " << result.name << "
+";
     }
     else
     {
-        std::cout << "  [FAIL] " << result.name << " - " << result.message << "\n";
+        std::cout << "  [FAIL] " << result.name << " - " << result.message << "
+";
     }
 }
 
@@ -51,7 +69,9 @@ void report_test(const TestResult &result)
 // ============================================================
 void test_types()
 {
-    std::cout << "\n=== Test 1: Types and Constants ===\n";
+    std::cout << "
+=== Test 1: Types and Constants ===
+";
 
     // Test PI constant
     {
@@ -108,7 +128,9 @@ void test_types()
 // ============================================================
 void test_bit_linear_xmx(s::queue &q)
 {
-    std::cout << "\n=== Test 2: BitLinearXMX Layer (BF16) ===\n";
+    std::cout << "
+=== Test 2: BitLinearXMX Layer (BF16) ===
+";
 
     using namespace neurobit::layers;
     using bfloat16 = sycl::ext::oneapi::bfloat16;
@@ -158,7 +180,8 @@ void test_bit_linear_xmx(s::queue &q)
                     {
                         passed = false;
                         std::cout << "    Mismatch at [" << b << "," << n << "]: expected " << expected << ", got "
-                                  << actual << "\n";
+                                  << actual << "
+";
                     }
                 }
             }
@@ -196,7 +219,8 @@ void test_bit_linear_xmx(s::queue &q)
         double avg_us = duration_us / 10.0;
         double gflops = (batch * in_features * out_features * 2.0) / (avg_us / 1e6) / 1e9;
 
-        std::cout << "  Performance smoke test: " << std::fixed << std::setprecision(2) << gflops << " GFLOPS\n";
+        std::cout << "  Performance smoke test: " << std::fixed << std::setprecision(2) << gflops << " GFLOPS
+";
         report_test({"BitLinearXMX performance smoke test", true, ""});
     }
 }
@@ -206,7 +230,9 @@ void test_bit_linear_xmx(s::queue &q)
 // ============================================================
 void test_slm_tiling_comparison(s::queue &q)
 {
-    std::cout << "\n=== Test 2b: SLM Tiling Optimization Comparison ===\n";
+    std::cout << "
+=== Test 2b: SLM Tiling Optimization Comparison ===
+";
 
     using namespace neurobit::layers;
     using bfloat16 = sycl::ext::oneapi::bfloat16;
@@ -225,7 +251,8 @@ void test_slm_tiling_comparison(s::queue &q)
 
     for (const auto &config : configs)
     {
-        std::cout << "Config: " << config.name << "\n";
+        std::cout << "Config: " << config.name << "
+";
 
         std::vector<bfloat16> h_X(config.batch * config.M, bfloat16(0.5f));
         std::vector<int8_t> h_W(config.M * config.N, 1);
@@ -276,7 +303,8 @@ void test_slm_tiling_comparison(s::queue &q)
         }
 
         double speedup = time_basic / time_slm;
-        std::cout << "  Basic: " << time_basic << " ms | SLM: " << time_slm << " ms | Speedup: " << speedup << "x\n";
+        std::cout << "  Basic: " << time_basic << " ms | SLM: " << time_slm << " ms | Speedup: " << speedup << "x
+";
 
         bool passed = speedup > 0.9; // Allow small regression, expected improvement
         report_test({config.name + " SLM Tiling", passed, "Speedup check"});
@@ -288,7 +316,9 @@ void test_slm_tiling_comparison(s::queue &q)
 // ============================================================
 void test_ssm_scan(s::queue &q)
 {
-    std::cout << "\n=== Test 3: SSMScan Layer ===\n";
+    std::cout << "
+=== Test 3: SSMScan Layer ===
+";
 
     using namespace neurobit::layers;
 
@@ -332,7 +362,9 @@ void test_ssm_scan(s::queue &q)
 // ============================================================
 void test_spike_neuron(s::queue &q)
 {
-    std::cout << "\n=== Test 4: SpikeNeuron Layer ===\n";
+    std::cout << "
+=== Test 4: SpikeNeuron Layer ===
+";
 
     using namespace neurobit::layers;
 
@@ -373,7 +405,9 @@ void test_spike_neuron(s::queue &q)
 // ============================================================
 void test_glial_cell()
 {
-    std::cout << "\n=== Test 5: GlialCell ===\n";
+    std::cout << "
+=== Test 5: GlialCell ===
+";
 
     using namespace neurobit::components;
 
@@ -411,7 +445,9 @@ void test_glial_cell()
 // ============================================================
 void test_hippocampus(s::queue &q)
 {
-    std::cout << "\n=== Test 6: Hippocampus ===\n";
+    std::cout << "
+=== Test 6: Hippocampus ===
+";
 
     using namespace neurobit::components;
 
@@ -450,7 +486,9 @@ void test_hippocampus(s::queue &q)
 // ============================================================
 void test_bit_brain(s::queue &q)
 {
-    std::cout << "\n=== Test 7: BitBrainLayer Integration ===\n";
+    std::cout << "
+=== Test 7: BitBrainLayer Integration ===
+";
     using namespace neurobit::layers;
     using namespace neurobit::components;
 
@@ -481,11 +519,17 @@ int main()
         s::queue q{s::gpu_selector_v};
         auto device = q.get_device();
 
-        std::cout << "\n========================================\n";
-        std::cout << "PNB Master Benchmark (Revised)\n";
-        std::cout << "========================================\n";
-        std::cout << "Device: " << device.get_info<s::info::device::name>() << "\n";
-        std::cout << "========================================\n";
+        std::cout << "
+========================================
+";
+        std::cout << "PNB Master Benchmark (Revised)
+";
+        std::cout << "========================================
+";
+        std::cout << "Device: " << device.get_info<s::info::device::name>() << "
+";
+        std::cout << "========================================
+";
 
         // Phase 1: Functional Tests
         test_types();
@@ -497,30 +541,48 @@ int main()
         test_hippocampus(q);
         test_bit_brain(q);
 
-        std::cout << "\n========================================\n";
-        std::cout << "Test Summary\n";
-        std::cout << "========================================\n";
-        std::cout << "Total: " << total_tests << "\n";
+        std::cout << "
+========================================
+";
+        std::cout << "Test Summary
+";
+        std::cout << "========================================
+";
+        std::cout << "Total: " << total_tests << "
+";
         std::cout << "Passed: " << passed_tests << " (" << std::fixed << std::setprecision(1)
-                  << (100.0 * passed_tests / total_tests) << "%)\n";
-        std::cout << "Failed: " << (total_tests - passed_tests) << "\n";
+                  << (100.0 * passed_tests / total_tests) << "%)
+";
+        std::cout << "Failed: " << (total_tests - passed_tests) << "
+";
 
         if (passed_tests != total_tests)
         {
-            std::cout << "\n[WARN] Skipping performance tests due to failures.\n";
+            std::cout << "
+[WARN] Skipping performance tests due to failures.
+";
             return 1;
         }
 
         // Phase 2: Performance Scaling Tests
-        std::cout << "\n========================================\n";
-        std::cout << "Performance Scaling Tests\n";
-        std::cout << "========================================\n";
+        std::cout << "
+========================================
+";
+        std::cout << "Performance Scaling Tests
+";
+        std::cout << "========================================
+";
 
         // BitLinearXMX Scaling
-        std::cout << "\n=== BitLinearXMX Scaling ===\n";
-        std::cout << "+---------------------+------------+-----------+------------+----------+----------+\n";
-        std::cout << "| Config              |   Elements |  Time(ms) |       TOPS |    GB/s  | Mode     |\n";
-        std::cout << "+---------------------+------------+-----------+------------+----------+----------+\n";
+        std::cout << "
+=== BitLinearXMX Scaling ===
+";
+        std::cout << "+---------------------+------------+-----------+------------+----------+----------+
+";
+        std::cout << "| Config              |   Elements |  Time(ms) |       TOPS |    GB/s  | Mode     |
+";
+        std::cout << "+---------------------+------------+-----------+------------+----------+----------+
+";
 
         using bf16 = neurobit::layers::bfloat16;
         for (auto [b, m, n] : std::vector<std::tuple<size_t, size_t, size_t>>{{1, 256, 256},
@@ -575,16 +637,23 @@ int main()
 
             char config[32];
             snprintf(config, sizeof(config), "%zux%zux%zu", b, m, n);
-            printf("| %-19s | %10zu | %9.3f | %10.3f | %8.2f | %-8s |\n", config, b * m * n, time_ms, tops, gb_s,
+            printf("| %-19s | %10zu | %9.3f | %10.3f | %8.2f | %-8s |
+", config, b * m * n, time_ms, tops, gb_s,
                    mode_str.c_str());
         }
-        std::cout << "+---------------------+------------+-----------+------------+----------+----------+\n";
+        std::cout << "+---------------------+------------+-----------+------------+----------+----------+
+";
 
         // SSMScan Scaling
-        std::cout << "\n=== SSMScan Scaling ===\n";
-        std::cout << "+---------------------+------------+-----------+--------------+\n";
-        std::cout << "| Config (BxLxD)      |   Elements |  Time(ms) |    M elem/s  |\n";
-        std::cout << "+---------------------+------------+-----------+--------------+\n";
+        std::cout << "
+=== SSMScan Scaling ===
+";
+        std::cout << "+---------------------+------------+-----------+--------------+
+";
+        std::cout << "| Config (BxLxD)      |   Elements |  Time(ms) |    M elem/s  |
+";
+        std::cout << "+---------------------+------------+-----------+--------------+
+";
 
         for (auto [b, l, d] : std::vector<std::tuple<size_t, size_t, size_t>>{
                  {1, 1, 4096}, {1, 1, 65536}, {64, 1, 4096}, {256, 1, 4096}})
@@ -619,15 +688,22 @@ int main()
 
             char config[32];
             snprintf(config, sizeof(config), "%zux%zux%zu", b, l, d);
-            printf("| %-19s | %10zu | %9.4f | %12.2f |\n", config, b * l * d, avg_time_ms, m_elem_s);
+            printf("| %-19s | %10zu | %9.4f | %12.2f |
+", config, b * l * d, avg_time_ms, m_elem_s);
         }
-        std::cout << "+---------------------+------------+-----------+--------------+\n";
+        std::cout << "+---------------------+------------+-----------+--------------+
+";
 
         // SpikeNeuron Scaling
-        std::cout << "\n=== SpikeNeuron Scaling ===\n";
-        std::cout << "+-----------------+------------+-----------+--------------+------------+\n";
-        std::cout << "| Config (BxN)    |    Neurons |  Time(ms) |  M neurons/s |     Spikes |\n";
-        std::cout << "+-----------------+------------+-----------+--------------+------------+\n";
+        std::cout << "
+=== SpikeNeuron Scaling ===
+";
+        std::cout << "+-----------------+------------+-----------+--------------+------------+
+";
+        std::cout << "| Config (BxN)    |    Neurons |  Time(ms) |  M neurons/s |     Spikes |
+";
+        std::cout << "+-----------------+------------+-----------+--------------+------------+
+";
 
         for (auto [b, n] : std::vector<std::pair<size_t, size_t>>{{1, 4096}, {1, 65536}, {64, 16384}})
         {
@@ -673,20 +749,26 @@ int main()
 
             char config[32];
             snprintf(config, sizeof(config), "%zux%zu", b, n);
-            printf("| %-15s | %10zu | %9.4f | %12.2f | %10d |\n", config, b * n, avg_time_ms, m_neurons_s, spike_count);
+            printf("| %-15s | %10zu | %9.4f | %12.2f | %10d |
+", config, b * n, avg_time_ms, m_neurons_s, spike_count);
         }
-        std::cout << "+-----------------+------------+-----------+--------------+------------+\n";
+        std::cout << "+-----------------+------------+-----------+--------------+------------+
+";
 
         return 0;
     }
     catch (const s::exception &e)
     {
-        std::cerr << "\n[FATAL] SYCL exception: " << e.what() << "\n";
+        std::cerr << "
+[FATAL] SYCL exception: " << e.what() << "
+";
         return 1;
     }
     catch (const std::exception &e)
     {
-        std::cerr << "\n[FATAL] Exception: " << e.what() << "\n";
+        std::cerr << "
+[FATAL] Exception: " << e.what() << "
+";
         return 1;
     }
 }

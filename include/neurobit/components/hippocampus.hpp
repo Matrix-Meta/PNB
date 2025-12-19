@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Project Neuro-Bit Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 #include "neurobit/core/types.hpp"
 #include <cmath>
@@ -97,6 +113,7 @@ class Hippocampus
             profile_events->push_back(ev0);
 
         auto ev1 = q.submit([&](s::handler &h) {
+            h.depends_on(ev0);
             s::accessor acc_X{buf_X, h, s::read_only};
             s::accessor acc_Wf{buf_W_fast, h, s::read_only};
             s::accessor acc_Ws{buf_W_slow, h, s::read_only};
@@ -134,6 +151,7 @@ class Hippocampus
             profile_events->push_back(ev1);
 
         auto ev2 = q.submit([&](s::handler &h) {
+            h.depends_on(ev1);
             h.single_task([=]() {
                 float input_norm = s::sqrt(*d_input_norm + 1e-8f);
                 float memory_norm = s::sqrt(*d_memory_norm + 1e-8f);
