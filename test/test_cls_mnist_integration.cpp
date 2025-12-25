@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,15 +58,19 @@ static bool load_checkpoint(const std::string &path, neurobit::layers::BitBrainL
     return true;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     using namespace neurobit;
-    std::cout << "
-=== PNB-X Marathon Reasoning (10,000 Steps) Test ===
-" << std::endl;
+    std::string model_path = (argc > 1) ? argv[1] : "exports/mnist_surrogate_best.bin";
+
+    std::cout << "\n=== PNB-X Marathon Reasoning (10,000 Steps) Test ===\n" << std::endl;
+    std::cout << "Loading Model: " << model_path << std::endl;
+
     try {
         s::queue q{s::gpu_selector_v};
         layers::BitBrainLayer::CheckpointState st; CheckpointMeta meta;
-        load_checkpoint("exports/mnist_surrogate_best.bin", st, meta);
+        if (!load_checkpoint(model_path, st, meta)) throw std::runtime_error("Load failed: " + model_path);
+
+        std::cout << "Model loaded. Checkpoint Val Acc: " << meta.val_acc << "%" << std::endl;
 
         layers::BitBrainLayer::Config cfg;
         cfg.input_dim=st.input_dim; cfg.hidden_dim=st.hidden_dim; cfg.output_dim=st.output_dim;
@@ -78,6 +82,9 @@ int main() {
         layers::BitBrainLayer brain(q, cfg); brain.set_effective_batch_size(1);
         s::buffer<float, 1> buf_wf{s::range<1>(st.input_dim * st.hidden_dim)}, buf_ws{s::range<1>(st.input_dim * st.hidden_dim)};
         brain.import_checkpoint_host(st, buf_wf, buf_ws);
+        
+        // 確保載入的目標活躍率被應用
+        brain.get_glial().set_target_sparsity(st.target_sparsity);
 
         std::ifstream fi("data/t10k-images-idx3-ubyte", std::ios::binary); fi.seekg(16);
         std::vector<unsigned char> pix(784); fi.read((char*)pix.data(), 784);
@@ -91,24 +98,37 @@ int main() {
 
         auto run_marathon = [&](float goal) {
             int steps = 0; float conf = 0;
+            // Cooldown buffer (Blank image)
+            s::buffer<float, 1> b_blank{s::range<1>(784)};
+            { s::host_accessor acc(b_blank, s::write_only); for(int i=0; i<784; ++i) acc[i] = -0.1307f/0.3081f; } // Normalized 0
+
             while(conf < goal && steps < 10000) { 
+                // Cooldown / Blink: Every 500 steps, rest for 10 steps
+                if(steps > 0 && steps % 500 == 0) {
+                    std::cout << "[Blinking...] Resting for 10 steps." << std::endl;
+                    for(int k=0; k<10; ++k) {
+                        brain.forward(b_blank, b_out, buf_wf, buf_ws);
+                        brain.get_glial().set_threshold(brain.get_glial_threshold_host() * 0.95f); // Metabolize threshold
+                        q.wait();
+                    }
+                }
+
                 brain.forward(b_in, b_out, buf_wf, buf_ws); q.wait();
                 std::vector<float> logits(10);
                 { s::host_accessor acc(b_out, s::read_only); std::copy(acc.get_pointer(), acc.get_pointer()+10, logits.begin()); }
                 conf = *std::max_element(logits.begin(), logits.end());
                 steps++;
-                // 每 1000 步輸出一次日誌，避免使用者焦慮
+                // 每 1000 步輸出一次日誌
                 if(steps % 1000 == 0) std::cout << "Thinking... Step " << steps << " | Current Conf: " << conf << std::endl;
             }
             return std::make_pair(steps, conf);
         };
 
         std::vector<float> noise_levels = {0.5f, 0.8f};
-        float GOAL = 1.8f; // 稍微調低門檻，使其可達成但仍具挑戰性
+        float GOAL = 3.0f; // 調高門檻，要求極高信心度
 
         for(float level : noise_levels) {
-            std::cout << "
->>> Testing Noise Level: " << (int)(level*100) << "%" << std::endl;
+            std::cout << "\n>>> Testing Noise Level: " << (int)(level*100) << "%" << std::endl;
             std::mt19937 rng(42); std::normal_distribution<float> dist(0, level * 255.0f);
             std::vector<float> img_noisy = img_clean;
             for(float &p : img_noisy) p = std::clamp(p + dist(rng), 0.0f, 255.0f);

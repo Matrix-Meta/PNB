@@ -102,8 +102,7 @@ void load_mnist(const std::string &image_path, const std::string &label_path, MN
     rows = swap_endian(rows);
     cols = swap_endian(cols);
 
-    std::cout << "載入" << num_imgs << "張影像[" << rows << "x" << cols << "]，來源：" << image_path << "...
-";
+    std::cout << "載入" << num_imgs << "張影像[" << rows << "x" << cols << "]，來源：" << image_path << "...\n";
 
     size_t image_size = rows * cols;
     data.images.resize(num_imgs, std::vector<float>(image_size));
@@ -652,12 +651,9 @@ static uint32_t make_random_seed_u32()
 
 static void print_usage()
 {
-    std::cout << "用法:
-";
-    std::cout << "./train_mnist_surrogate [--config <path>] [--resume <ckpt>]
-";
-    std::cout << "預設會讀取工作目錄下的config.toml(若存在)，否則使用內建預設值。
-";
+    std::cout << "用法:\n";
+    std::cout << "./train_mnist_surrogate [--config <path>] [--resume <ckpt>]\n";
+    std::cout << "預設會讀取工作目錄下的config.toml(若存在)，否則使用內建預設值。\n";
 }
 
 static bool parse_cli_args(int argc, char **argv, CliArgs &out, std::string &err)
@@ -709,8 +705,7 @@ static bool load_train_config_from_toml(const std::string &path, TrainConfig &cf
     {
         auto t = pnb::toml_min::parse_file(path);
         for (const auto &w : t.warnings)
-            std::cout << "config警告:" << w << "
-";
+            std::cout << "config警告:" << w << "\n";
 
         cfg.In = t.get_size("model.in", cfg.In);
         cfg.Hidden = std::max<size_t>(16, t.get_size("model.hidden", cfg.Hidden));
@@ -743,8 +738,7 @@ static bool load_train_config_from_toml(const std::string &path, TrainConfig &cf
                     if (s == -1)
                     {
                         cfg.seed = make_random_seed_u32();
-                        std::cout << "config:train.seed=-1|改用隨機seed=" << cfg.seed << "
-";
+                        std::cout << "config:train.seed=-1|改用隨機seed=" << cfg.seed << "\n";
                     }
                     else if (s >= 0 && s <= 0xFFFFFFFFll)
                     {
@@ -801,8 +795,7 @@ static bool load_train_config_from_toml(const std::string &path, TrainConfig &cf
     }
     catch (const std::exception &e)
     {
-        std::cout << "載入config失敗:" << path << "|" << e.what() << "
-";
+        std::cout << "載入config失敗:" << path << "|" << e.what() << "\n";
         return false;
     }
 }
@@ -813,8 +806,7 @@ static bool load_train_config(const CliArgs &cli, TrainConfig &cfg, TrainConfigS
     {
         if (!load_train_config_from_toml(cli.config_path, cfg, set))
             return false;
-        std::cout << "載入config:" << cli.config_path << "
-";
+        std::cout << "載入config:" << cli.config_path << "\n";
         return true;
     }
 
@@ -823,8 +815,7 @@ static bool load_train_config(const CliArgs &cli, TrainConfig &cfg, TrainConfigS
 
     if (!load_train_config_from_toml("config.toml", cfg, set))
         return false;
-    std::cout << "載入config:config.toml
-";
+    std::cout << "載入config:config.toml\n";
     return true;
 }
 
@@ -837,8 +828,7 @@ static bool load_mnist_required(const std::string &img, const std::string &lbl, 
     }
     catch (const std::exception &e)
     {
-        std::cerr << "載入MNIST失敗：" << e.what() << "
-";
+        std::cerr << "載入MNIST失敗：" << e.what() << "\n";
         return false;
     }
 }
@@ -852,8 +842,7 @@ static bool load_mnist_optional_val(const std::string &img, const std::string &l
     }
     catch (const std::exception &e)
     {
-        std::cerr << "載入驗證集失敗(將略過)：" << e.what() << "
-";
+        std::cerr << "載入驗證集失敗(將略過)：" << e.what() << "\n";
         return false;
     }
 }
@@ -892,8 +881,7 @@ static void apply_resume_to_config(TrainConfig &cfg, const TrainConfigSet &set, 
     if (cfg_in0 != cfg.In || cfg_hidden0 != cfg.Hidden || cfg_out0 != cfg.Out || cfg_batch0 != cfg.batch)
     {
         std::cout << "警告:resume後模型維度以檢查點為準|in=" << cfg.In << "|hidden=" << cfg.Hidden
-                  << "|out=" << cfg.Out << "|batch=" << cfg.batch << "
-";
+                  << "|out=" << cfg.Out << "|batch=" << cfg.batch << "\n";
     }
 }
 
@@ -903,8 +891,7 @@ int main(int argc, char **argv)
     std::string cli_err;
     if (!parse_cli_args(argc, argv, cli, cli_err))
     {
-        std::cout << cli_err << "
-";
+        std::cout << cli_err << "\n";
         print_usage();
         return 1;
     }
@@ -923,37 +910,30 @@ int main(int argc, char **argv)
     std::string resume_err;
     if (!load_resume(cli.resume_path, resume, resume_err))
     {
-        std::cout << "載入檢查點失敗:" << cli.resume_path << "|" << resume_err << "
-";
+        std::cout << "載入檢查點失敗:" << cli.resume_path << "|" << resume_err << "\n";
         return 1;
     }
     apply_resume_to_config(cfg, cfg_set, resume);
     if (resume.enabled)
     {
         std::cout << "載入檢查點成功:" << cli.resume_path << "|epoch=" << resume.meta.epoch << "|seed=" << cfg.seed
-                  << "|lr=" << cfg.lr << "
-";
+                  << "|lr=" << cfg.lr << "\n";
         if (cfg.epochs <= resume.start_epoch)
         {
-            std::cout << "epochs=" << cfg.epochs << "小於等於resume後起始輪數=" << resume.start_epoch << "，無需續訓
-";
+            std::cout << "epochs=" << cfg.epochs << "小於等於resume後起始輪數=" << resume.start_epoch << "，無需續訓\n";
             return 0;
         }
     }
 
     if (cfg.Out != 10)
     {
-        std::cout << "警告：MNIST標籤為0-9；Out=" << cfg.Out << "可能不符合此資料集。
-";
+        std::cout << "警告：MNIST標籤為0-9；Out=" << cfg.Out << "可能不符合此資料集。\n";
     }
 
     std::cout << "初始化PNBBitBrain（" << cfg.In << "->" << cfg.Hidden << "->" << cfg.Out
-              << "），資料集：MNIST（BatchSize:" << cfg.batch << "）...
-";
-    std::cout << "架構：BitNetb1.58+SSM+M-DSiLU+Glial+Hippocampus
-";
-    std::cout << "隱層維度(Hidden):" << cfg.Hidden << "
-";
+              << "），資料集：MNIST（BatchSize:" << cfg.batch << "）...\n";
+    std::cout << "架構：BitNetb1.58+SSM+M-DSiLU+Glial+Hippocampus\n";
+    std::cout << "隱層維度(Hidden):" << cfg.Hidden << "\n";
 
     MNISTData data;
     MNISTData val_data;
@@ -1006,8 +986,7 @@ int main(int argc, char **argv)
 
         s::queue q{s::default_selector_v,
                    s::property_list{s::property::queue::enable_profiling{}, s::property::queue::in_order{}}};
-        std::cout << "運行裝置：" << q.get_device().get_info<s::info::device::name>() << "
-";
+        std::cout << "運行裝置：" << q.get_device().get_info<s::info::device::name>() << "\n";
         label_smoothing = std::clamp(label_smoothing, 0.0f, 0.2f);
         mnist_std = std::fmax(mnist_std, 1e-6f);
         float inv_mnist_std = 1.0f / mnist_std;
@@ -1061,8 +1040,7 @@ int main(int argc, char **argv)
         brain.set_feedback(0.0f, 0.0f, 0.0f, true);
         std::cout << "目標活躍率設定=" << (target_active * 100.0f) << "%|容忍=±1%|範圍="
                   << (brain_cfg.neuromodulator_config.active_min * 100.0f) << "%~"
-                  << (brain_cfg.neuromodulator_config.active_max * 100.0f) << "%
-";
+                  << (brain_cfg.neuromodulator_config.active_max * 100.0f) << "%\n";
 
         struct WeightPack
         {
@@ -1197,8 +1175,7 @@ int main(int argc, char **argv)
             std::string import_err;
             if (!brain.import_checkpoint_host(resume.st, buf_W_fast, buf_W_slow, &import_err))
             {
-                std::cout << "套用檢查點失敗:" << import_err << "
-";
+                std::cout << "套用檢查點失敗:" << import_err << "\n";
                 return 1;
             }
             best_val_acc = resume.meta.has_val ? resume.meta.val_acc : resume.meta.train_acc;
@@ -1622,8 +1599,7 @@ int main(int argc, char **argv)
                 {
                     std::cout << "|關閉增強=" << (enable_augment ? 0 : 1) << "|label_smoothing=" << label_smoothing;
                 }
-                std::cout << "
-";
+                std::cout << "\n";
             }
 
             std::cout << "第" << epoch << "輪：準確率=" << accuracy << "%"
@@ -1635,14 +1611,12 @@ int main(int argc, char **argv)
                       << "|平均權重(|W|)=" << wabs.mean_all << "|各層(|W|)in/m1/m2/out=" << wabs.proj_in << "/"
                       << wabs.proj_mid1 << "/" << wabs.proj_mid2 << "/" << wabs.proj_out
                       << "|Glial閾值=" << brain.get_glial_threshold_host() << "|學習率=" << LR
-                      << "|耗時=" << epoch_duration << "ms
-";
+                      << "|耗時=" << epoch_duration << "ms\n";
 
             if (has_val)
             {
                 std::cout << "驗證：準確率=" << val_acc << "%|損失=" << val_loss << "|不確定性=" << (val_unc * 100.0f)
-                          << "%|樣本=" << val_samples << "
-";
+                          << "%|樣本=" << val_samples << "\n";
             }
 
             neurobit::layers::BitBrainLayer::CheckpointState ckpt_current;
@@ -1688,18 +1662,15 @@ int main(int argc, char **argv)
                     int ema_val_samples = 0;
                     run_validation(ema_val_acc, ema_val_loss, ema_val_unc, ema_val_samples);
                     std::cout << "驗證EMA：準確率=" << ema_val_acc << "%|損失=" << ema_val_loss << "|不確定性="
-                              << (ema_val_unc * 100.0f) << "%|樣本=" << ema_val_samples << "
-";
+                              << (ema_val_unc * 100.0f) << "%|樣本=" << ema_val_samples << "\n";
                 }
                 else
                 {
-                    std::cout << "驗證EMA：套用權重失敗|" << err << "
-";
+                    std::cout << "驗證EMA：套用權重失敗|" << err << "\n";
                 }
                 std::string restore_err;
                 if (!brain.import_checkpoint_host(ckpt_current, buf_W_fast, buf_W_slow, &restore_err))
-                    std::cout << "驗證EMA：還原權重失敗|" << restore_err << "
-";
+                    std::cout << "驗證EMA：還原權重失敗|" << restore_err << "\n";
             }
 
             if (enable_swa && has_val && have_ckpt_current)
@@ -1741,18 +1712,15 @@ int main(int argc, char **argv)
                         run_validation(swa_val_acc, swa_val_loss, swa_val_unc, swa_val_samples);
                         std::cout << "驗證SWA：準確率=" << swa_val_acc << "%|損失=" << swa_val_loss << "|不確定性="
                                   << (swa_val_unc * 100.0f) << "%|樣本=" << swa_val_samples << "|count=" << swa_count
-                                  << "
-";
+                                  << "\n";
                     }
                     else
                     {
-                        std::cout << "驗證SWA：套用權重失敗|" << err << "
-";
+                        std::cout << "驗證SWA：套用權重失敗|" << err << "\n";
                     }
                     std::string restore_err;
                     if (!brain.import_checkpoint_host(ckpt_current, buf_W_fast, buf_W_slow, &restore_err))
-                        std::cout << "驗證SWA：還原權重失敗|" << restore_err << "
-";
+                        std::cout << "驗證SWA：還原權重失敗|" << restore_err << "\n";
                 }
             }
 
@@ -1786,8 +1754,7 @@ int main(int argc, char **argv)
                           << "|反向(裝置sum)=" << (bwd_dev_sum_ms_sum * inv) << "ms"
                           << "|更新(牆鐘)=" << (step_wall_ms_sum * inv) << "ms"
                           << "|更新(裝置span)=" << (step_dev_span_ms_sum * inv) << "ms"
-                          << "|更新(裝置sum)=" << (step_dev_sum_ms_sum * inv) << "ms
-";
+                          << "|更新(裝置sum)=" << (step_dev_sum_ms_sum * inv) << "ms\n";
             }
 
             if (enable_ckpt && (ckpt_save_last || ckpt_save_best || ckpt_every > 0))
@@ -1809,13 +1776,11 @@ int main(int argc, char **argv)
                     if (save_checkpoint_file(path, ckpt, static_cast<uint32_t>(epoch), seed, LR, accuracy, avg_loss,
                                              avg_unc, has_val, val_acc, val_loss, val_unc))
                     {
-                        std::cout << "保存檢查點last:" << path << "
-";
+                        std::cout << "保存檢查點last:" << path << "\n";
                     }
                     else
                     {
-                        std::cout << "保存檢查點失敗last:" << path << "
-";
+                        std::cout << "保存檢查點失敗last:" << path << "\n";
                     }
                 }
 
@@ -1830,13 +1795,11 @@ int main(int argc, char **argv)
                     if (save_checkpoint_file(path, ckpt, static_cast<uint32_t>(epoch), seed, LR, accuracy, avg_loss,
                                              avg_unc, has_val, val_acc, val_loss, val_unc))
                     {
-                        std::cout << "保存檢查點best:" << path << "
-";
+                        std::cout << "保存檢查點best:" << path << "\n";
                     }
                     else
                     {
-                        std::cout << "保存檢查點失敗best:" << path << "
-";
+                        std::cout << "保存檢查點失敗best:" << path << "\n";
                     }
                 }
 
@@ -1846,13 +1809,11 @@ int main(int argc, char **argv)
                     if (save_checkpoint_file(path, ckpt, static_cast<uint32_t>(epoch), seed, LR, accuracy, avg_loss,
                                              avg_unc, has_val, val_acc, val_loss, val_unc))
                     {
-                        std::cout << "保存檢查點epoch:" << path << "
-";
+                        std::cout << "保存檢查點epoch:" << path << "\n";
                     }
                     else
                     {
-                        std::cout << "保存檢查點失敗epoch:" << path << "
-";
+                        std::cout << "保存檢查點失敗epoch:" << path << "\n";
                     }
                 }
             }
@@ -1887,16 +1848,14 @@ int main(int argc, char **argv)
                             }
                             else
                             {
-                                std::cout << "驗證推力:回退best失敗|" << import_err << "
-";
+                                std::cout << "驗證推力:回退best失敗|" << import_err << "\n";
                             }
                         }
 
                         if (kicked || restored)
                         {
                             std::cout << "驗證推力:patience=" << val_kick_patience << "|LR=" << LR
-                                      << "|回退best=" << (restored ? 1 : 0) << "
-";
+                                      << "|回退best=" << (restored ? 1 : 0) << "\n";
                         }
                     }
                 }
@@ -1919,13 +1878,11 @@ int main(int argc, char **argv)
                 std::string bin_path = export_dir + "/" + filename_base + ".bin";
                 if (save_checkpoint_file(bin_path, state, ep, seed, lr_val, t_acc, t_loss, t_unc, h_val, v_acc, v_loss, v_unc))
                 {
-                    std::cout << "保存模型bin:" << bin_path << "
-";
+                    std::cout << "保存模型bin:" << bin_path << "\n";
                 }
                 else
                 {
-                    std::cout << "保存模型bin失敗:" << bin_path << "
-";
+                    std::cout << "保存模型bin失敗:" << bin_path << "\n";
                     return;
                 }
 
@@ -1936,14 +1893,12 @@ int main(int argc, char **argv)
                     int rc = std::system(cmd.c_str());
                     if (rc == 0)
                     {
-                        std::cout << "保存模型onnx:" << onnx_path << "
-";
+                        std::cout << "保存模型onnx:" << onnx_path << "\n";
                     }
                     else
                     {
                         std::cout << "保存模型onnx失敗(需要python3+onnx):" << onnx_path
-                                  << "|可先執行:python3 -m pip install onnx
-";
+                                  << "|可先執行:python3 -m pip install onnx\n";
                     }
                 }
             };
@@ -1978,8 +1933,7 @@ int main(int argc, char **argv)
     }
     catch (const s::exception &e)
     {
-        std::cout << "SYCL錯誤：" << e.what() << "
-";
+        std::cout << "SYCL錯誤：" << e.what() << "\n";
         return 1;
     }
     return 0;
