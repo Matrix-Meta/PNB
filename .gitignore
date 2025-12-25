@@ -54,7 +54,6 @@
 /master_benchmark
 
 # MNIST raw datasets
-/data/
 !/data/.gitkeep
 
 # Local experiment logs
@@ -62,6 +61,7 @@ gemini-conversation-*.json
 
 # Checkpoints / local training logs
 checkpoints/
+exports/
 *.ckpt
 *.pnbckpt
 /exports/

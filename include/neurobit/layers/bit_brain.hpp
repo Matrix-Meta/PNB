@@ -539,10 +539,16 @@ class BitBrainLayer
     // Update
     void step(float lr, float weight_decay = 0.0f, std::vector<s::event> *profile_events = nullptr)
     {
-        proj_in_.step(queue_, lr, weight_decay, profile_events);
-        proj_mid1_.step(queue_, lr, weight_decay, profile_events);
-        proj_mid2_.step(queue_, lr, weight_decay, profile_events);
-        proj_out_.step(queue_, lr, weight_decay, profile_events);
+        // 內化核心邏輯：
+        // 腳本傳入的 lr 作為基礎，但有效 LR 受 Vigilance (0~1) 調控。
+        // 當 Vigilance 很高時，代表模型對當前樣本很驚訝/不確定，自動調高可塑性。
+        float plasticity = 1.0f + activation_.vigilance; 
+        float effective_lr = lr * plasticity;
+
+        proj_in_.step(queue_, effective_lr, weight_decay, profile_events);
+        proj_mid1_.step(queue_, effective_lr, weight_decay, profile_events);
+        proj_mid2_.step(queue_, effective_lr, weight_decay, profile_events);
+        proj_out_.step(queue_, effective_lr, weight_decay, profile_events);
 
         if (last_training_)
         {
@@ -593,7 +599,15 @@ class BitBrainLayer
                 .accuracy = last_accuracy_,
                 .training = last_training_,
             });
-            staged_target = control.target_sparsity;
+            
+            // 內化：讓 target_sparsity 受不確定性直接調節
+            // 如果 uncertainty 高，放寬門檻；如果低，收緊。
+            float dynamic_target = control.target_sparsity;
+            if (last_uncertainty_ > 0.6f) dynamic_target += 0.02f;
+            else if (last_uncertainty_ < 0.2f) dynamic_target -= 0.02f;
+            
+            staged_target = std::clamp(dynamic_target, 0.05f, 0.35f);
+            
             glial_.set_target_sparsity(staged_target);
             activation_.vigilance = control.vigilance;
             activation_.tau = control.md_silu_tau;
