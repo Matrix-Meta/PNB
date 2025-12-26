@@ -1,0 +1,802 @@
+2025-12-26 04:38:54,734 [INFO] Model loaded successfully from /home/matrix/github/PNB/web_demo/../exports/mnist_surrogate_best_v11.onnx
+2025-12-26 04:38:54,735 [INFO] Starting PNB-X Web Demo Server...
+2025-12-26 04:38:54,739 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 04:38:54,739 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 04:41:12,345 [INFO] Model loaded successfully from /home/matrix/github/PNB/web_demo/../exports/mnist_surrogate_best_v11.onnx
+2025-12-26 04:41:12,346 [INFO] Starting PNB-X Web Demo Server...
+2025-12-26 04:41:12,350 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 04:41:12,350 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 04:42:07,930 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:07] "GET / HTTP/1.1" 200 -
+2025-12-26 04:42:09,684 [INFO] Received prediction request
+2025-12-26 04:42:09,700 [INFO] Input Stat: min=0.0, max=255.0, mean=9.49
+2025-12-26 04:42:09,709 [INFO] Result: 1 (Conf: 0.9632)
+2025-12-26 04:42:09,710 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:16,570 [INFO] Received prediction request
+2025-12-26 04:42:16,574 [INFO] Input Stat: min=0.0, max=255.0, mean=26.54
+2025-12-26 04:42:16,582 [INFO] Result: 3 (Conf: 0.9989)
+2025-12-26 04:42:16,583 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:16] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:20,289 [INFO] Received prediction request
+2025-12-26 04:42:20,293 [INFO] Input Stat: min=0.0, max=255.0, mean=27.74
+2025-12-26 04:42:20,300 [INFO] Result: 2 (Conf: 0.9999)
+2025-12-26 04:42:20,301 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:20] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:23,339 [INFO] Received prediction request
+2025-12-26 04:42:23,342 [INFO] Input Stat: min=0.0, max=255.0, mean=24.95
+2025-12-26 04:42:23,350 [INFO] Result: 2 (Conf: 0.9175)
+2025-12-26 04:42:23,351 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:23] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:28,321 [INFO] Received prediction request
+2025-12-26 04:42:28,325 [INFO] Input Stat: min=0.0, max=255.0, mean=27.80
+2025-12-26 04:42:28,333 [INFO] Result: 2 (Conf: 0.9957)
+2025-12-26 04:42:28,333 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:28] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:31,068 [INFO] Received prediction request
+2025-12-26 04:42:31,072 [INFO] Input Stat: min=0.0, max=255.0, mean=11.78
+2025-12-26 04:42:31,080 [INFO] Result: 0 (Conf: 0.6367)
+2025-12-26 04:42:31,081 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:34,091 [INFO] Received prediction request
+2025-12-26 04:42:34,094 [INFO] Input Stat: min=0.0, max=255.0, mean=12.74
+2025-12-26 04:42:34,101 [INFO] Result: 0 (Conf: 0.5704)
+2025-12-26 04:42:34,102 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:36,849 [INFO] Received prediction request
+2025-12-26 04:42:36,853 [INFO] Input Stat: min=0.0, max=255.0, mean=11.57
+2025-12-26 04:42:36,862 [INFO] Result: 1 (Conf: 0.9982)
+2025-12-26 04:42:36,863 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:40,185 [INFO] Received prediction request
+2025-12-26 04:42:40,189 [INFO] Input Stat: min=0.0, max=255.0, mean=15.34
+2025-12-26 04:42:40,196 [INFO] Result: 7 (Conf: 0.9028)
+2025-12-26 04:42:40,197 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:44,036 [INFO] Received prediction request
+2025-12-26 04:42:44,040 [INFO] Input Stat: min=0.0, max=255.0, mean=12.86
+2025-12-26 04:42:44,048 [INFO] Result: 4 (Conf: 0.5692)
+2025-12-26 04:42:44,048 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:46,202 [INFO] Received prediction request
+2025-12-26 04:42:46,206 [INFO] Input Stat: min=0.0, max=255.0, mean=11.03
+2025-12-26 04:42:46,214 [INFO] Result: 1 (Conf: 0.4631)
+2025-12-26 04:42:46,214 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:49,506 [INFO] Received prediction request
+2025-12-26 04:42:49,510 [INFO] Input Stat: min=0.0, max=255.0, mean=12.64
+2025-12-26 04:42:49,518 [INFO] Result: 1 (Conf: 0.9972)
+2025-12-26 04:42:49,518 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:49] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:42:54,131 [INFO] Received prediction request
+2025-12-26 04:42:54,135 [INFO] Input Stat: min=0.0, max=255.0, mean=16.79
+2025-12-26 04:42:54,143 [INFO] Result: 1 (Conf: 0.9990)
+2025-12-26 04:42:54,144 [INFO] 127.0.0.1 - - [26/Dec/2025 04:42:54] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:02,196 [INFO] Received prediction request
+2025-12-26 04:43:02,200 [INFO] Input Stat: min=0.0, max=255.0, mean=5.38
+2025-12-26 04:43:02,207 [INFO] Result: 3 (Conf: 0.6446)
+2025-12-26 04:43:02,208 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:02] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:03,459 [INFO] Received prediction request
+2025-12-26 04:43:03,463 [INFO] Input Stat: min=0.0, max=255.0, mean=11.21
+2025-12-26 04:43:03,471 [INFO] Result: 9 (Conf: 0.4452)
+2025-12-26 04:43:03,472 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:03] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:05,130 [INFO] Received prediction request
+2025-12-26 04:43:05,133 [INFO] Input Stat: min=0.0, max=255.0, mean=17.39
+2025-12-26 04:43:05,142 [INFO] Result: 7 (Conf: 0.7705)
+2025-12-26 04:43:05,142 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:08,363 [INFO] Received prediction request
+2025-12-26 04:43:08,367 [INFO] Input Stat: min=0.0, max=255.0, mean=5.08
+2025-12-26 04:43:08,375 [INFO] Result: 1 (Conf: 0.7907)
+2025-12-26 04:43:08,376 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:09,810 [INFO] Received prediction request
+2025-12-26 04:43:09,813 [INFO] Input Stat: min=0.0, max=255.0, mean=10.90
+2025-12-26 04:43:09,821 [INFO] Result: 1 (Conf: 0.9385)
+2025-12-26 04:43:09,822 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:11,835 [INFO] Received prediction request
+2025-12-26 04:43:11,838 [INFO] Input Stat: min=0.0, max=255.0, mean=5.42
+2025-12-26 04:43:11,846 [INFO] Result: 7 (Conf: 0.9757)
+2025-12-26 04:43:11,847 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:12,634 [INFO] Received prediction request
+2025-12-26 04:43:12,638 [INFO] Input Stat: min=0.0, max=255.0, mean=9.56
+2025-12-26 04:43:12,646 [INFO] Result: 7 (Conf: 0.9656)
+2025-12-26 04:43:12,646 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:12] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:13,618 [INFO] Received prediction request
+2025-12-26 04:43:13,622 [INFO] Input Stat: min=0.0, max=255.0, mean=12.45
+2025-12-26 04:43:13,630 [INFO] Result: 7 (Conf: 0.8771)
+2025-12-26 04:43:13,631 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:13] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:14,625 [INFO] Received prediction request
+2025-12-26 04:43:14,629 [INFO] Input Stat: min=0.0, max=255.0, mean=17.10
+2025-12-26 04:43:14,636 [INFO] Result: 7 (Conf: 0.8292)
+2025-12-26 04:43:14,637 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:14] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:15,450 [INFO] Received prediction request
+2025-12-26 04:43:15,454 [INFO] Input Stat: min=0.0, max=255.0, mean=23.84
+2025-12-26 04:43:15,462 [INFO] Result: 2 (Conf: 0.9852)
+2025-12-26 04:43:15,462 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:15] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:18,809 [INFO] Received prediction request
+2025-12-26 04:43:18,811 [INFO] Input Stat: min=0.0, max=255.0, mean=24.96
+2025-12-26 04:43:18,819 [INFO] Result: 2 (Conf: 0.9932)
+2025-12-26 04:43:18,819 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:18] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:19,833 [INFO] Received prediction request
+2025-12-26 04:43:19,837 [INFO] Input Stat: min=0.0, max=255.0, mean=29.28
+2025-12-26 04:43:19,845 [INFO] Result: 2 (Conf: 0.9357)
+2025-12-26 04:43:19,846 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:19] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:22,194 [INFO] Received prediction request
+2025-12-26 04:43:22,199 [INFO] Input Stat: min=0.0, max=255.0, mean=4.86
+2025-12-26 04:43:22,207 [INFO] Result: 7 (Conf: 0.6595)
+2025-12-26 04:43:22,207 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:22] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:25,705 [INFO] Received prediction request
+2025-12-26 04:43:25,709 [INFO] Input Stat: min=0.0, max=255.0, mean=17.40
+2025-12-26 04:43:25,716 [INFO] Result: 7 (Conf: 0.8741)
+2025-12-26 04:43:25,717 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:25] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:28,883 [INFO] Received prediction request
+2025-12-26 04:43:28,885 [INFO] Input Stat: min=0.0, max=255.0, mean=20.17
+2025-12-26 04:43:28,894 [INFO] Result: 4 (Conf: 0.6447)
+2025-12-26 04:43:28,894 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:28] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:32,755 [INFO] Received prediction request
+2025-12-26 04:43:32,758 [INFO] Input Stat: min=0.0, max=255.0, mean=9.60
+2025-12-26 04:43:32,766 [INFO] Result: 4 (Conf: 0.9928)
+2025-12-26 04:43:32,767 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:43:34,099 [INFO] Received prediction request
+2025-12-26 04:43:34,104 [INFO] Input Stat: min=0.0, max=255.0, mean=21.24
+2025-12-26 04:43:34,111 [INFO] Result: 4 (Conf: 0.9993)
+2025-12-26 04:43:34,112 [INFO] 127.0.0.1 - - [26/Dec/2025 04:43:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:45:58,257 [INFO] Received prediction request
+2025-12-26 04:45:58,260 [INFO] Input Stat: min=0.0, max=255.0, mean=18.65
+2025-12-26 04:45:58,269 [INFO] Result: 8 (Conf: 0.5687)
+2025-12-26 04:45:58,269 [INFO] 127.0.0.1 - - [26/Dec/2025 04:45:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:01,818 [INFO] Received prediction request
+2025-12-26 04:46:01,821 [INFO] Input Stat: min=0.0, max=255.0, mean=17.26
+2025-12-26 04:46:01,829 [INFO] Result: 7 (Conf: 0.8057)
+2025-12-26 04:46:01,829 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:01] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:02,452 [INFO] Received prediction request
+2025-12-26 04:46:02,455 [INFO] Input Stat: min=0.0, max=255.0, mean=26.06
+2025-12-26 04:46:02,463 [INFO] Result: 3 (Conf: 0.6798)
+2025-12-26 04:46:02,463 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:02] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:05,570 [INFO] Received prediction request
+2025-12-26 04:46:05,574 [INFO] Input Stat: min=0.0, max=255.0, mean=11.66
+2025-12-26 04:46:05,582 [INFO] Result: 1 (Conf: 0.9893)
+2025-12-26 04:46:05,582 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:06,186 [INFO] Received prediction request
+2025-12-26 04:46:06,188 [INFO] Input Stat: min=0.0, max=255.0, mean=15.89
+2025-12-26 04:46:06,197 [INFO] Result: 1 (Conf: 0.9985)
+2025-12-26 04:46:06,198 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:11,675 [INFO] Received prediction request
+2025-12-26 04:46:11,678 [INFO] Input Stat: min=0.0, max=255.0, mean=32.25
+2025-12-26 04:46:11,686 [INFO] Result: 6 (Conf: 0.9789)
+2025-12-26 04:46:11,687 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:14,195 [INFO] Received prediction request
+2025-12-26 04:46:14,199 [INFO] Input Stat: min=0.0, max=255.0, mean=5.82
+2025-12-26 04:46:14,207 [INFO] Result: 7 (Conf: 0.7720)
+2025-12-26 04:46:14,207 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:14] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:15,428 [INFO] Received prediction request
+2025-12-26 04:46:15,432 [INFO] Input Stat: min=0.0, max=255.0, mean=15.22
+2025-12-26 04:46:15,440 [INFO] Result: 0 (Conf: 0.4415)
+2025-12-26 04:46:15,441 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:15] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:16,689 [INFO] Received prediction request
+2025-12-26 04:46:16,692 [INFO] Input Stat: min=0.0, max=255.0, mean=21.52
+2025-12-26 04:46:16,700 [INFO] Result: 0 (Conf: 0.8439)
+2025-12-26 04:46:16,700 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:16] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:17,651 [INFO] Received prediction request
+2025-12-26 04:46:17,655 [INFO] Input Stat: min=0.0, max=255.0, mean=26.33
+2025-12-26 04:46:17,663 [INFO] Result: 5 (Conf: 0.8038)
+2025-12-26 04:46:17,663 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:17] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:18,538 [INFO] Received prediction request
+2025-12-26 04:46:18,542 [INFO] Input Stat: min=0.0, max=255.0, mean=30.86
+2025-12-26 04:46:18,551 [INFO] Result: 5 (Conf: 0.7417)
+2025-12-26 04:46:18,551 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:18] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:20,595 [INFO] Received prediction request
+2025-12-26 04:46:20,599 [INFO] Input Stat: min=0.0, max=255.0, mean=32.97
+2025-12-26 04:46:20,606 [INFO] Result: 5 (Conf: 0.5413)
+2025-12-26 04:46:20,607 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:20] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:23,043 [INFO] Received prediction request
+2025-12-26 04:46:23,046 [INFO] Input Stat: min=0.0, max=255.0, mean=5.90
+2025-12-26 04:46:23,054 [INFO] Result: 5 (Conf: 0.8874)
+2025-12-26 04:46:23,055 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:23] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:24,610 [INFO] Received prediction request
+2025-12-26 04:46:24,612 [INFO] Input Stat: min=0.0, max=255.0, mean=14.61
+2025-12-26 04:46:24,621 [INFO] Result: 5 (Conf: 0.5039)
+2025-12-26 04:46:24,621 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:24] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:26,706 [INFO] Received prediction request
+2025-12-26 04:46:26,711 [INFO] Input Stat: min=0.0, max=255.0, mean=24.65
+2025-12-26 04:46:26,719 [INFO] Result: 5 (Conf: 0.5329)
+2025-12-26 04:46:26,719 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:26] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:27,593 [INFO] Received prediction request
+2025-12-26 04:46:27,597 [INFO] Input Stat: min=0.0, max=255.0, mean=27.09
+2025-12-26 04:46:27,604 [INFO] Result: 5 (Conf: 0.7516)
+2025-12-26 04:46:27,605 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:27] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:38,737 [INFO] Received prediction request
+2025-12-26 04:46:38,741 [INFO] Input Stat: min=0.0, max=255.0, mean=37.46
+2025-12-26 04:46:38,749 [INFO] Result: 0 (Conf: 0.7947)
+2025-12-26 04:46:38,749 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:40,418 [INFO] Received prediction request
+2025-12-26 04:46:40,422 [INFO] Input Stat: min=0.0, max=255.0, mean=6.89
+2025-12-26 04:46:40,430 [INFO] Result: 7 (Conf: 0.7719)
+2025-12-26 04:46:40,430 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:41,288 [INFO] Received prediction request
+2025-12-26 04:46:41,292 [INFO] Input Stat: min=0.0, max=255.0, mean=12.97
+2025-12-26 04:46:41,300 [INFO] Result: 5 (Conf: 0.8619)
+2025-12-26 04:46:41,300 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:42,034 [INFO] Received prediction request
+2025-12-26 04:46:42,038 [INFO] Input Stat: min=0.0, max=255.0, mean=21.81
+2025-12-26 04:46:42,046 [INFO] Result: 4 (Conf: 0.5222)
+2025-12-26 04:46:42,046 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:42,779 [INFO] Received prediction request
+2025-12-26 04:46:42,783 [INFO] Input Stat: min=0.0, max=255.0, mean=30.11
+2025-12-26 04:46:42,790 [INFO] Result: 5 (Conf: 0.6881)
+2025-12-26 04:46:42,791 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:44,288 [INFO] Received prediction request
+2025-12-26 04:46:44,292 [INFO] Input Stat: min=0.0, max=255.0, mean=35.79
+2025-12-26 04:46:44,300 [INFO] Result: 5 (Conf: 0.9221)
+2025-12-26 04:46:44,300 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:45,459 [INFO] Received prediction request
+2025-12-26 04:46:45,463 [INFO] Input Stat: min=0.0, max=255.0, mean=42.37
+2025-12-26 04:46:45,470 [INFO] Result: 5 (Conf: 0.9729)
+2025-12-26 04:46:45,471 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:48,074 [INFO] Received prediction request
+2025-12-26 04:46:48,078 [INFO] Input Stat: min=0.0, max=255.0, mean=45.25
+2025-12-26 04:46:48,085 [INFO] Result: 5 (Conf: 0.9527)
+2025-12-26 04:46:48,086 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:48] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:49,016 [INFO] Received prediction request
+2025-12-26 04:46:49,021 [INFO] Input Stat: min=0.0, max=255.0, mean=45.36
+2025-12-26 04:46:49,028 [INFO] Result: 5 (Conf: 0.9465)
+2025-12-26 04:46:49,029 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:49] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:49,656 [INFO] Received prediction request
+2025-12-26 04:46:49,661 [INFO] Input Stat: min=0.0, max=255.0, mean=45.63
+2025-12-26 04:46:49,669 [INFO] Result: 5 (Conf: 0.9361)
+2025-12-26 04:46:49,670 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:49] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:50,297 [INFO] Received prediction request
+2025-12-26 04:46:50,301 [INFO] Input Stat: min=0.0, max=255.0, mean=46.26
+2025-12-26 04:46:50,309 [INFO] Result: 5 (Conf: 0.9394)
+2025-12-26 04:46:50,309 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:50] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:51,226 [INFO] Received prediction request
+2025-12-26 04:46:51,230 [INFO] Input Stat: min=0.0, max=255.0, mean=48.06
+2025-12-26 04:46:51,237 [INFO] Result: 5 (Conf: 0.8716)
+2025-12-26 04:46:51,238 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:51,851 [INFO] Received prediction request
+2025-12-26 04:46:51,855 [INFO] Input Stat: min=0.0, max=255.0, mean=50.50
+2025-12-26 04:46:51,863 [INFO] Result: 5 (Conf: 0.7235)
+2025-12-26 04:46:51,863 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:52,717 [INFO] Received prediction request
+2025-12-26 04:46:52,721 [INFO] Input Stat: min=0.0, max=255.0, mean=53.65
+2025-12-26 04:46:52,729 [INFO] Result: 6 (Conf: 0.5473)
+2025-12-26 04:46:52,729 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:52] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:46:57,082 [INFO] Received prediction request
+2025-12-26 04:46:57,086 [INFO] Input Stat: min=0.0, max=255.0, mean=27.68
+2025-12-26 04:46:57,094 [INFO] Result: 5 (Conf: 0.6594)
+2025-12-26 04:46:57,095 [INFO] 127.0.0.1 - - [26/Dec/2025 04:46:57] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:00,618 [INFO] Received prediction request
+2025-12-26 04:47:00,622 [INFO] Input Stat: min=0.0, max=255.0, mean=20.69
+2025-12-26 04:47:00,630 [INFO] Result: 6 (Conf: 0.3697)
+2025-12-26 04:47:00,631 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:00] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:02,817 [INFO] Received prediction request
+2025-12-26 04:47:02,821 [INFO] Input Stat: min=0.0, max=255.0, mean=19.78
+2025-12-26 04:47:02,828 [INFO] Result: 6 (Conf: 0.8415)
+2025-12-26 04:47:02,829 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:02] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:04,836 [INFO] Received prediction request
+2025-12-26 04:47:04,840 [INFO] Input Stat: min=0.0, max=255.0, mean=17.83
+2025-12-26 04:47:04,848 [INFO] Result: 5 (Conf: 0.7939)
+2025-12-26 04:47:04,849 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:04] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:09,297 [INFO] Received prediction request
+2025-12-26 04:47:09,301 [INFO] Input Stat: min=0.0, max=255.0, mean=6.64
+2025-12-26 04:47:09,309 [INFO] Result: 5 (Conf: 0.3316)
+2025-12-26 04:47:09,310 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:11,136 [INFO] Received prediction request
+2025-12-26 04:47:11,140 [INFO] Input Stat: min=0.0, max=255.0, mean=14.61
+2025-12-26 04:47:11,147 [INFO] Result: 7 (Conf: 0.4909)
+2025-12-26 04:47:11,148 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:13,906 [INFO] Received prediction request
+2025-12-26 04:47:13,909 [INFO] Input Stat: min=0.0, max=255.0, mean=19.95
+2025-12-26 04:47:13,918 [INFO] Result: 7 (Conf: 0.4178)
+2025-12-26 04:47:13,918 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:13] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:16,787 [INFO] Received prediction request
+2025-12-26 04:47:16,790 [INFO] Input Stat: min=0.0, max=255.0, mean=19.88
+2025-12-26 04:47:16,798 [INFO] Result: 3 (Conf: 0.6397)
+2025-12-26 04:47:16,798 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:16] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:18,995 [INFO] Received prediction request
+2025-12-26 04:47:18,999 [INFO] Input Stat: min=0.0, max=255.0, mean=17.49
+2025-12-26 04:47:19,007 [INFO] Result: 1 (Conf: 0.3710)
+2025-12-26 04:47:19,007 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:19] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:20,795 [INFO] Received prediction request
+2025-12-26 04:47:20,798 [INFO] Input Stat: min=0.0, max=255.0, mean=19.51
+2025-12-26 04:47:20,806 [INFO] Result: 0 (Conf: 0.8043)
+2025-12-26 04:47:20,807 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:20] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:22,763 [INFO] Received prediction request
+2025-12-26 04:47:22,767 [INFO] Input Stat: min=0.0, max=255.0, mean=4.23
+2025-12-26 04:47:22,774 [INFO] Result: 5 (Conf: 0.9389)
+2025-12-26 04:47:22,775 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:22] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:23,514 [INFO] Received prediction request
+2025-12-26 04:47:23,518 [INFO] Input Stat: min=0.0, max=255.0, mean=5.38
+2025-12-26 04:47:23,525 [INFO] Result: 5 (Conf: 0.8836)
+2025-12-26 04:47:23,526 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:23] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:24,139 [INFO] Received prediction request
+2025-12-26 04:47:24,142 [INFO] Input Stat: min=0.0, max=255.0, mean=15.78
+2025-12-26 04:47:24,150 [INFO] Result: 5 (Conf: 0.7863)
+2025-12-26 04:47:24,151 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:24] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:25,066 [INFO] Received prediction request
+2025-12-26 04:47:25,070 [INFO] Input Stat: min=0.0, max=255.0, mean=15.78
+2025-12-26 04:47:25,078 [INFO] Result: 5 (Conf: 0.7863)
+2025-12-26 04:47:25,078 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:25] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:27,986 [INFO] Received prediction request
+2025-12-26 04:47:27,990 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:27,998 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:27,999 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:27] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:29,334 [INFO] Received prediction request
+2025-12-26 04:47:29,337 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:29,344 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:29,345 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:29] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:29,955 [INFO] Received prediction request
+2025-12-26 04:47:29,959 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:29,966 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:29,967 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:29] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:30,404 [INFO] Received prediction request
+2025-12-26 04:47:30,409 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:30,416 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:30,417 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:30,913 [INFO] Received prediction request
+2025-12-26 04:47:30,916 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:30,924 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:30,925 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:31,308 [INFO] Received prediction request
+2025-12-26 04:47:31,311 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:31,319 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:31,319 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:31,537 [INFO] Received prediction request
+2025-12-26 04:47:31,541 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:31,549 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:31,550 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:31,747 [INFO] Received prediction request
+2025-12-26 04:47:31,750 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:31,758 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:31,759 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 04:47:31,913 [INFO] Received prediction request
+2025-12-26 04:47:31,916 [INFO] Input Stat: min=0.0, max=255.0, mean=18.46
+2025-12-26 04:47:31,924 [INFO] Result: 5 (Conf: 0.8161)
+2025-12-26 04:47:31,924 [INFO] 127.0.0.1 - - [26/Dec/2025 04:47:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:07:45,178 [INFO] Model loaded successfully from /home/matrix/github/PNB/web_demo/../exports/mnist_surrogate_best_v11.onnx
+2025-12-26 05:07:45,191 [INFO] Starting PNB-X Web Demo Server...
+2025-12-26 05:07:45,196 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:07:45,196 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:08:15,002 [INFO] 127.0.0.1 - - [26/Dec/2025 05:08:15] "GET / HTTP/1.1" 200 -
+2025-12-26 05:08:19,157 [ERROR] Prediction Error: name 't_pre_end' is not defined
+2025-12-26 05:08:19,158 [ERROR] Traceback (most recent call last):
+  File "/home/matrix/github/PNB/web_demo/app.py", line 74, in predict
+    'preprocess_ms': (t_pre_end - t_pre_start) * 1000,
+                      ^^^^^^^^^
+NameError: name 't_pre_end' is not defined
+
+2025-12-26 05:08:19,158 [INFO] 127.0.0.1 - - [26/Dec/2025 05:08:19] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2025-12-26 05:08:21,068 [ERROR] Prediction Error: name 't_pre_end' is not defined
+2025-12-26 05:08:21,069 [ERROR] Traceback (most recent call last):
+  File "/home/matrix/github/PNB/web_demo/app.py", line 74, in predict
+    'preprocess_ms': (t_pre_end - t_pre_start) * 1000,
+                      ^^^^^^^^^
+NameError: name 't_pre_end' is not defined
+
+2025-12-26 05:08:21,069 [INFO] 127.0.0.1 - - [26/Dec/2025 05:08:21] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2025-12-26 05:08:22,555 [ERROR] Prediction Error: name 't_pre_end' is not defined
+2025-12-26 05:08:22,556 [ERROR] Traceback (most recent call last):
+  File "/home/matrix/github/PNB/web_demo/app.py", line 74, in predict
+    'preprocess_ms': (t_pre_end - t_pre_start) * 1000,
+                      ^^^^^^^^^
+NameError: name 't_pre_end' is not defined
+
+2025-12-26 05:08:22,556 [INFO] 127.0.0.1 - - [26/Dec/2025 05:08:22] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2025-12-26 05:10:24,383 [INFO] Model loaded successfully from /home/matrix/github/PNB/web_demo/../exports/mnist_surrogate_best_v11.onnx
+2025-12-26 05:10:24,384 [INFO] Starting PNB-X Web Demo Server...
+2025-12-26 05:10:24,389 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:10:24,389 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:10:28,635 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:28] "GET / HTTP/1.1" 200 -
+2025-12-26 05:10:31,383 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:31] "GET / HTTP/1.1" 200 -
+2025-12-26 05:10:32,330 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:32] "GET / HTTP/1.1" 200 -
+2025-12-26 05:10:34,340 [INFO] Result: 1 (Conf: 0.8831) | Infer: 9.07ms | Mem: 240.38MB
+2025-12-26 05:10:34,340 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:10:38,329 [INFO] Result: 2 (Conf: 0.7180) | Infer: 8.95ms | Mem: 242.49MB
+2025-12-26 05:10:38,329 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:10:42,640 [INFO] Result: 2 (Conf: 0.7170) | Infer: 7.54ms | Mem: 242.50MB
+2025-12-26 05:10:42,640 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:10:43,135 [INFO] Result: 4 (Conf: 0.9123) | Infer: 8.31ms | Mem: 242.51MB
+2025-12-26 05:10:43,135 [INFO] 127.0.0.1 - - [26/Dec/2025 05:10:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:14:44,889 [INFO] Model loaded. Weights Memory: 152.75 MB
+2025-12-26 05:14:44,890 [INFO] Starting PNB-X Web Demo Server...
+2025-12-26 05:14:44,894 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:14:44,894 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:14:47,114 [INFO] 127.0.0.1 - - [26/Dec/2025 05:14:47] "[33mGET / HTTP/1.1[0m" 404 -
+2025-12-26 05:14:49,246 [INFO] 127.0.0.1 - - [26/Dec/2025 05:14:49] "[33mGET / HTTP/1.1[0m" 404 -
+2025-12-26 05:15:11,966 [INFO] 127.0.0.1 - - [26/Dec/2025 05:15:11] "[33mGET / HTTP/1.1[0m" 404 -
+2025-12-26 05:15:18,205 [INFO] 127.0.0.1 - - [26/Dec/2025 05:15:18] "[33mGET / HTTP/1.1[0m" 404 -
+2025-12-26 05:16:26,174 [INFO] Model loaded. Weights Memory: 152.75 MB
+2025-12-26 05:16:26,175 [INFO] Starting PNB-X Web Demo Server...
+2025-12-26 05:16:26,179 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:16:26,180 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:16:29,789 [INFO] 127.0.0.1 - - [26/Dec/2025 05:16:29] "GET / HTTP/1.1" 200 -
+2025-12-26 05:16:31,480 [INFO] 127.0.0.1 - - [26/Dec/2025 05:16:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:16:34,904 [INFO] 127.0.0.1 - - [26/Dec/2025 05:16:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:16:36,961 [INFO] 127.0.0.1 - - [26/Dec/2025 05:16:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:16:37,480 [INFO] 127.0.0.1 - - [26/Dec/2025 05:16:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:32,258 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:22:32,335 [INFO] Native Model initialized: 4096 hidden units
+2025-12-26 05:22:32,340 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:22:32,340 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:22:44,077 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:44] "GET / HTTP/1.1" 200 -
+2025-12-26 05:22:47,003 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:51,250 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:53,547 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:53] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:56,902 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:56] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:57,525 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:57] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:58,071 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:58,368 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:58,648 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:58,810 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:59,079 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:59] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:59,412 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:59] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:59,499 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:59] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:59,744 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:59] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:22:59,791 [INFO] 127.0.0.1 - - [26/Dec/2025 05:22:59] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:00,151 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:00] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:00,417 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:00] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:00,680 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:00] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:00,911 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:00] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:01,211 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:01] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:01,585 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:01] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:02,073 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:02] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:02,392 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:02] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:03,049 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:03] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:03,598 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:03] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:05,032 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:07,429 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:08,922 [INFO] 127.0.0.1 - - [26/Dec/2025 05:23:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:23:59,575 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:23:59,661 [INFO] Native Model initialized: 4096 hidden units
+2025-12-26 05:23:59,667 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:23:59,667 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:24:06,688 [INFO] 127.0.0.1 - - [26/Dec/2025 05:24:06] "GET / HTTP/1.1" 200 -
+2025-12-26 05:24:10,112 [INFO] 127.0.0.1 - - [26/Dec/2025 05:24:10] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:27:32,989 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:27:33,077 [INFO] Native Model initialized: 4096 hidden units
+2025-12-26 05:27:33,082 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:27:33,082 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:27:35,599 [INFO] 127.0.0.1 - - [26/Dec/2025 05:27:35] "GET / HTTP/1.1" 200 -
+2025-12-26 05:27:38,064 [INFO] 127.0.0.1 - - [26/Dec/2025 05:27:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:27:44,131 [INFO] 127.0.0.1 - - [26/Dec/2025 05:27:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:27:53,265 [INFO] 127.0.0.1 - - [26/Dec/2025 05:27:53] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:27:54,347 [INFO] 127.0.0.1 - - [26/Dec/2025 05:27:54] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:27:57,917 [INFO] 127.0.0.1 - - [26/Dec/2025 05:27:57] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:01,645 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:01] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:02,085 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:02] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:03,614 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:03] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:04,255 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:04] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:04,528 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:04] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:04,866 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:04] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:05,159 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:05,386 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:05,493 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:05,761 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:05,857 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:06,099 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:06,404 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:06,486 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:06,554 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:36,408 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:36,842 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:36,851 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:37,110 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:37,129 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:37,626 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:37,680 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:38,038 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:38,210 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:38,397 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:28:38,582 [INFO] 127.0.0.1 - - [26/Dec/2025 05:28:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:39:53,950 [INFO] Backend: dpnp (Intel GPU Accelerated)
+2025-12-26 05:39:54,086 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:39:54,212 [INFO] Native Model initialized: 4096 hidden units on dpnp
+2025-12-26 05:39:54,216 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:39:54,216 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:40:02,883 [INFO] 127.0.0.1 - - [26/Dec/2025 05:40:02] "GET / HTTP/1.1" 200 -
+2025-12-26 05:40:30,983 [ERROR] Traceback (most recent call last):
+  File "/home/matrix/github/PNB/web_demo/app.py", line 229, in predict
+    logits, novelty = model_engine.forward(x)
+                      ~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/matrix/github/PNB/web_demo/app.py", line 166, in forward
+    h = self.mdsilu(self.layer_norm(h), novelty)
+  File "/home/matrix/github/PNB/web_demo/app.py", line 138, in mdsilu
+    n_shaped = (1.0 - self.xp.exp(-self.md_novelty_s * n_shaped)) / (1.0 - self.xp.exp(-self.md_novelty_s))
+                                                                           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/matrix/github/PNB/.venv/lib/python3.13/site-packages/dpnp/dpnp_algo/dpnp_elementwise_common.py", line 166, in __call__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Input array must be any of supported type, but got <class 'float'>
+
+2025-12-26 05:40:30,983 [INFO] 127.0.0.1 - - [26/Dec/2025 05:40:30] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2025-12-26 05:40:31,582 [ERROR] Traceback (most recent call last):
+  File "/home/matrix/github/PNB/web_demo/app.py", line 229, in predict
+    logits, novelty = model_engine.forward(x)
+                      ~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/matrix/github/PNB/web_demo/app.py", line 166, in forward
+    h = self.mdsilu(self.layer_norm(h), novelty)
+  File "/home/matrix/github/PNB/web_demo/app.py", line 138, in mdsilu
+    n_shaped = (1.0 - self.xp.exp(-self.md_novelty_s * n_shaped)) / (1.0 - self.xp.exp(-self.md_novelty_s))
+                                                                           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/matrix/github/PNB/.venv/lib/python3.13/site-packages/dpnp/dpnp_algo/dpnp_elementwise_common.py", line 166, in __call__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Input array must be any of supported type, but got <class 'float'>
+
+2025-12-26 05:40:31,582 [INFO] 127.0.0.1 - - [26/Dec/2025 05:40:31] "[35m[1mPOST /predict HTTP/1.1[0m" 500 -
+2025-12-26 05:41:43,497 [INFO] Backend: dpnp (Intel GPU Accelerated)
+2025-12-26 05:41:43,633 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:41:43,757 [INFO] Native Model initialized: 4096 hidden units on dpnp
+2025-12-26 05:41:43,761 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:41:43,761 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:41:45,097 [INFO] 127.0.0.1 - - [26/Dec/2025 05:41:45] "GET / HTTP/1.1" 200 -
+2025-12-26 05:42:07,212 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:07,473 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:07] "GET / HTTP/1.1" 200 -
+2025-12-26 05:42:13,744 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:13] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:19,592 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:19] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:23,792 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:23] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:30,885 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:31,750 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:38,596 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:39,475 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:39] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:39,949 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:39] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:40,253 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:40,431 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:40,609 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:40,789 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:40,938 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:41,153 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:41,341 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:41,526 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:41,715 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:41,891 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:42,083 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:42,252 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:42,436 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:42,634 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:42,819 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:42,996 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:43,188 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:43,388 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:43,589 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:43,786 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:43,965 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:44,348 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:44,549 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:44,742 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:44,924 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:45,104 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:45,299 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:45,498 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:45,684 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:45,875 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:46,083 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:46,279 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:46,476 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:46,667 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:46,867 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:47,070 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:47,261 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:47,466 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:47,676 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:47,859 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:48,066 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:48] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:52,795 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:52] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:42:54,069 [INFO] 127.0.0.1 - - [26/Dec/2025 05:42:54] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:44:57,424 [INFO] Backend: dpnp (Intel GPU Accelerated)
+2025-12-26 05:44:57,576 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:44:57,710 [INFO] Native Model initialized: 4096 hidden units on dpnp
+2025-12-26 05:44:57,715 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:44:57,715 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:44:58,867 [INFO] 127.0.0.1 - - [26/Dec/2025 05:44:58] "GET / HTTP/1.1" 200 -
+2025-12-26 05:45:01,401 [INFO] 127.0.0.1 - - [26/Dec/2025 05:45:01] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:45:06,585 [INFO] 127.0.0.1 - - [26/Dec/2025 05:45:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:45:09,631 [INFO] 127.0.0.1 - - [26/Dec/2025 05:45:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:50:04,002 [INFO] Backend: dpnp (Intel GPU Accelerated)
+2025-12-26 05:50:04,157 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 05:50:04,403 [INFO] Native Model initialized: 4096 hidden units on dpnp
+2025-12-26 05:50:04,408 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 05:50:04,408 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 05:50:18,177 [INFO] 127.0.0.1 - - [26/Dec/2025 05:50:18] "GET / HTTP/1.1" 200 -
+2025-12-26 05:50:23,956 [INFO] 127.0.0.1 - - [26/Dec/2025 05:50:23] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:53:53,689 [INFO] 127.0.0.1 - - [26/Dec/2025 05:53:53] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:53:55,306 [INFO] 127.0.0.1 - - [26/Dec/2025 05:53:55] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:53:55,945 [INFO] 127.0.0.1 - - [26/Dec/2025 05:53:55] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:53:58,429 [INFO] 127.0.0.1 - - [26/Dec/2025 05:53:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:01,430 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:01] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:05,033 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:05] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:08,580 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:10,676 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:10] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:13,629 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:13] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:35,336 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:35] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:37,674 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:39,779 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:39] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:42,251 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:44,030 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:46,323 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:48,292 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:48] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:50,062 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:50] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:52,110 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:52] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:53,980 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:53] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:54:59,013 [INFO] 127.0.0.1 - - [26/Dec/2025 05:54:59] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:30,494 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:30,715 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:30,913 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:31,101 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:31,289 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:31,465 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:31,644 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:31,836 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:32,016 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:32,180 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:32,369 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:32,554 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:32,729 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:32,921 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:33,105 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:33,291 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:33,474 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:33,660 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:33,865 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:34,067 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:34,249 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:34,432 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:34,618 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:34,818 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:35,011 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:35] "POST /predict HTTP/1.1" 200 -
+2025-12-26 05:57:40,610 [INFO] 127.0.0.1 - - [26/Dec/2025 05:57:40] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:04:16,230 [INFO] Backend: dpnp (Intel GPU Accelerated)
+2025-12-26 06:04:16,374 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 06:04:16,512 [INFO] Native Model initialized: 4096 hidden units on dpnp
+2025-12-26 06:04:16,516 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 06:04:16,516 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 06:04:42,209 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:42] "GET / HTTP/1.1" 200 -
+2025-12-26 06:04:44,517 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:04:48,833 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:48] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:04:51,924 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:04:52,484 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:52] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:04:55,216 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:55] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:04:55,782 [INFO] 127.0.0.1 - - [26/Dec/2025 06:04:55] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:04,758 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:04] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:06,863 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:07,260 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:07,506 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:07,708 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:07,895 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:08,075 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:08,282 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:08,467 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:08,625 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:08,826 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:08] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:09,051 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:09,551 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:09,757 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:09,939 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:10,131 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:10] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:10,322 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:10] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:10,516 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:10] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:10,715 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:10] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:11,084 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:11,283 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:11,483 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:11,867 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:12,052 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:12] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:12,233 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:12] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:12,783 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:12] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:12,990 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:12] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:14,799 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:14] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:16,318 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:16] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:17,435 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:17] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:19,947 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:19] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:21,500 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:21] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:23,410 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:23] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:25,174 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:25] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:26,492 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:26] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:28,756 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:28] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:29,917 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:29] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:30,410 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:30,899 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:30] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:31,293 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:31,684 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:32,067 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:32,491 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:32,916 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:33,316 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:33,702 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:33] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:34,109 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:34,483 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:35,421 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:35] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:36,839 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:37,351 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:37,781 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:38,380 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:38,670 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:38] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:39,401 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:39] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:39,724 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:39] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:41,839 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:41] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:42,428 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:42] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:43,558 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:43] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:44,471 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:44] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:45,368 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:45] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:46,277 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:46,925 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:46] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:47,653 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:47] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:48,045 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:48] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:48,537 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:48] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:49,007 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:49] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:49,787 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:49] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:50,269 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:50] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:50,645 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:50] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:51,108 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:51,517 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:51,734 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:51] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:52,275 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:52] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:52,696 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:52] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:53,059 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:53] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:54,205 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:54] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:05:58,690 [INFO] 127.0.0.1 - - [26/Dec/2025 06:05:58] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:07,298 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:07] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:13,815 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:13] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:16,984 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:16] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:19,074 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:19] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:21,384 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:21] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:25,741 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:25] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:29,247 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:29] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:31,253 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:31,652 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:31,850 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:31] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:32,091 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:32,290 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:32,514 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:32] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:34,646 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:34] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:35,398 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:35] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:35,948 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:35] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:36,226 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:36,492 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:36,684 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:36,892 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:36] "POST /predict HTTP/1.1" 200 -
+2025-12-26 06:06:37,107 [INFO] 127.0.0.1 - - [26/Dec/2025 06:06:37] "POST /predict HTTP/1.1" 200 -
+2025-12-26 18:17:59,199 [INFO] Backend: dpnp (Intel GPU Accelerated)
+2025-12-26 18:17:59,399 [INFO] Using Native PNB Engine (NumPy)
+2025-12-26 18:17:59,667 [INFO] Native Model initialized: 4096 hidden units on dpnp
+2025-12-26 18:17:59,674 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.194:5000
+2025-12-26 18:17:59,674 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-26 18:18:03,572 [INFO] 127.0.0.1 - - [26/Dec/2025 18:18:03] "GET / HTTP/1.1" 200 -
+2025-12-26 18:18:04,495 [INFO] 127.0.0.1 - - [26/Dec/2025 18:18:04] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-12-26 18:18:06,984 [INFO] 127.0.0.1 - - [26/Dec/2025 18:18:06] "POST /predict HTTP/1.1" 200 -
+2025-12-26 18:18:09,355 [INFO] 127.0.0.1 - - [26/Dec/2025 18:18:09] "POST /predict HTTP/1.1" 200 -
+2025-12-26 18:18:11,634 [INFO] 127.0.0.1 - - [26/Dec/2025 18:18:11] "POST /predict HTTP/1.1" 200 -
+2025-12-26 18:18:13,663 [INFO] 127.0.0.1 - - [26/Dec/2025 18:18:13] "POST /predict HTTP/1.1" 200 -
